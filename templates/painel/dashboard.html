@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel de Vigilância em Saúde</title>
+</head>
+<body>
+    <h1>Painel de Vigilância em Saúde</h1>
+
+    <h2>Denúncias recebidas</h2>
+
+    {% if denuncias %}
+        <table border="1" cellpadding="8">
+            <thead>
+                <tr>
+                    <th>Protocolo</th>
+                    <th>Tipo</th>
+                    <th>Bairro</th>
+                    <th>Status</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for denuncia in denuncias %}
+                    <tr>
+                        <td>{{ denuncia.protocolo }}</td>
+                        <td>{{ denuncia.get_tipo_display }}</td>
+                        <td>{{ denuncia.bairro }}</td>
+                        <td>{{ denuncia.get_status_display }}</td>
+                        <td>
+                            <a href="{% url 'detalha-painel' denuncia.id %}">
+                                Ver detalhes
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Nenhuma denúncia cadastrada.</p>
+    {% endif %}
+</body>
+</html>
