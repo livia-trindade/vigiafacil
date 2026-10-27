@@ -1,5 +1,5 @@
 
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required, permission_required
 from .models import Denuncia
@@ -24,18 +24,32 @@ def detalha(request, id_denuncia):
     })
 
 
-def create(request):
+def registro(request):
     if request.method == 'POST':
         form = DenunciaForm(request.POST)
 
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/denuncia/sucesso/')
+            denuncia = form.save()
+            return redirect(
+                'sucesso-denuncia',
+                protocolo=denuncia.protocolo
+            )
     else:
         form = DenunciaForm()
 
-    return render(request, 'denuncia/create.html', {
+    return render(request, 'denuncia/registro.html', {
         'form': form
+    })
+
+
+def sucesso(request, protocolo):
+    denuncia = get_object_or_404(
+        Denuncia,
+        protocolo=protocolo
+    )
+
+    return render(request, 'denuncia/sucesso.html', {
+        'denuncia': denuncia
     })
 
 
@@ -71,7 +85,3 @@ def delete(request, id_denuncia):
     return render(request, 'denuncia/delete.html', {
         'denuncia': denuncia
     })
-
-
-def sucesso(request):
-    return render(request, 'denuncia/sucesso.html')

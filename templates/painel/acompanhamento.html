@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Acompanhamento</title>
+</head>
+
+<body>
+    <main class="container">
+        <h1>Registrar Acompanhamento</h1>
+
+        <div class="info">
+            <h2>Dados da denúncia</h2>
+
+            <p>
+                <strong>Protocolo:</strong>
+                {{ denuncia.protocolo }}
+            </p>
+
+            <p>
+                <strong>Tipo:</strong>
+                {{ denuncia.get_tipo_display }}
+            </p>
+
+            <p>
+                <strong>Bairro:</strong>
+                {{ denuncia.bairro }}
+            </p>
+
+            <p>
+                <strong>Status atual:</strong>
+                {{ denuncia.get_status_display }}
+            </p>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            {{ form.non_field_errors }}
+
+            <label for="{{ form.descricao.id_for_label }}">
+                Descrição das providências
+            </label>
+
+            {{ form.descricao }}
+
+            {% if form.descricao.errors %}
+                <div class="erro">
+                    {{ form.descricao.errors }}
+                </div>
+            {% endif %}
+
+            <div class="acoes">
+                <button type="submit">
+                    Registrar acompanhamento
+                </button>
+
+                <a
+                    class="voltar"
+                    href="{% url 'detalha-painel' denuncia.id %}"
+                >
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </main>
+</body>
+</html>

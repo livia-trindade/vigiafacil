@@ -1,3 +1,6 @@
+import secrets
+import string
+
 from django.db import models
 
 class Denuncia(models.Model):
@@ -52,11 +55,31 @@ class Denuncia(models.Model):
         auto_now=True
     )
 
+    protocolo = models.CharField(max_length=10, unique=True)
+
     class Meta:
         db_table = 'denuncia_denuncia'
         ordering = ['-data_criacao']
         verbose_name = 'Denúncia'
         verbose_name_plural = 'Denúncias'
+
+
+    def save(self, *args, **kwargs):
+        if not self.protocolo:
+            caracteres = string.ascii_letters + string.digits
+
+            while True:
+                protocolo = ''.join(
+                    secrets.choice(caracteres) for _ in range(10)
+                )
+
+                if not Denuncia.objects.filter(
+                    protocolo=protocolo
+                ).exists():
+                    self.protocolo = protocolo
+                    break
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f'Denúncia {self.protocolo}'

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atualizar Status da Denúncia</title>
+</head>
+
+<body>
+    <main class="container">
+        <h1>Atualizar status</h1>
+
+        <div class="info">
+            <p>
+                <strong>Protocolo:</strong>
+                {{ denuncia.protocolo }}
+            </p>
+
+            <p>
+                <strong>Tipo de denúncia:</strong>
+                {{ denuncia.get_tipo_display }}
+            </p>
+
+            <p>
+                <strong>Status atual:</strong>
+                {{ denuncia.get_status_display }}
+            </p>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="erro">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <label for="{{ form.status.id_for_label }}">
+                Novo status:
+            </label>
+
+            {{ form.status }}
+
+            {% if form.status.errors %}
+                <div class="erro">
+                    {{ form.status.errors }}
+                </div>
+            {% endif %}
+
+            <button type="submit">Salvar alteração</button>
+
+            <a
+                class="voltar"
+                href="{% url 'detalha-painel' denuncia.id %}"
+            >
+                Cancelar
+            </a>
+        </form>
+    </main>
+</body>
+</html>

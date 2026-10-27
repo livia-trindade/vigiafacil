@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes da Denúncia</title>
+</head>
+
+<body>
+    <main class="container">
+        <h1>Detalhes da Denúncia</h1>
+
+        <div class="info">
+            <p>
+                <strong>Protocolo:</strong>
+                {{ denuncia.protocolo }}
+            </p>
+
+            <p>
+                <strong>Tipo:</strong>
+                {{ denuncia.get_tipo_display }}
+            </p>
+
+            <p>
+                <strong>Descrição:</strong>
+                {{ denuncia.descricao }}
+            </p>
+
+            <p>
+                <strong>Endereço:</strong>
+                {{ denuncia.endereco }}
+            </p>
+
+            <p>
+                <strong>Bairro:</strong>
+                {{ denuncia.bairro }}
+            </p>
+
+            <p>
+                <strong>Data da ocorrência:</strong>
+                {{ denuncia.data_ocorrencia|date:"d/m/Y"|default:"Não informada" }}
+            </p>
+
+            <p>
+                <strong>Status:</strong>
+                <span class="status">
+                    {{ denuncia.get_status_display }}
+                </span>
+            </p>
+
+            <p>
+                <strong>Data de registro:</strong>
+                {{ denuncia.data_criacao|date:"d/m/Y H:i" }}
+            </p>
+        </div>
+
+        <h2>Ações</h2>
+
+        <div class="acoes">
+            <a
+                class="botao"
+                href="{% url 'atualizar-status' denuncia.id %}"
+            >
+                Atualizar status
+            </a>
+
+            <a
+                class="botao"
+                href="{% url 'registrar-acompanhamento' denuncia.id %}"
+            >
+                Registrar acompanhamento
+            </a>
+
+            <a
+                class="botao secundario"
+                href="{% url 'dashboard-painel' %}"
+            >
+                Voltar ao painel
+            </a>
+        </div>
+
+        <hr>
+
+        <h2>Histórico de acompanhamentos</h2>
+
+        {% if acompanhamentos %}
+            {% for acompanhamento in acompanhamentos %}
+                <div class="acompanhamento">
+                    <p>
+                        <strong>Data:</strong>
+                        {{ acompanhamento.data_registro|date:"d/m/Y H:i" }}
+                    </p>
+
+                    <p>
+                        <strong>Vigilante:</strong>
+                        {{ acompanhamento.vigilante.username }}
+                    </p>
+
+                    <p>
+                        <strong>Providência registrada:</strong>
+                        {{ acompanhamento.descricao }}
+                    </p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="vazio">
+                Nenhum acompanhamento foi registrado para esta denúncia.
+            </p>
+        {% endif %}
+    </main>
+</body>
+</html>

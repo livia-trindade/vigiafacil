@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Denúncia registrada</title>
+</head>
+
+<body>
+    <main class="container">
+        <h1>Denúncia registrada!</h1>
+
+        <p>Sua denúncia foi enviada com sucesso.</p>
+
+        <p><strong>Guarde seu número de protocolo:</strong></p>
+
+        <div class="protocolo">
+            <span id="codigo">{{ denuncia.protocolo }}</span>
+
+            <button type="button" id="copiar">
+                Copiar
+            </button>
+        </div>
+
+        <p id="mensagem" class="mensagem" aria-live="polite"></p>
+
+        <p class="aviso">
+            Guarde esse código para consultar sua denúncia futuramente.
+            Ele não será exibido novamente nesta página se você sair dela.
+        </p>
+
+        <a href="{% url 'registro-denuncia' %}">
+            Registrar outra denúncia
+        </a>
+
+        <a href="{% url 'index-denuncia' %}">
+            Voltar para pagina inciial
+        </a>
+    </main>
+
+    <script>
+        const botao = document.getElementById('copiar');
+        const codigo = document.getElementById('codigo');
+        const mensagem = document.getElementById('mensagem');
+
+        botao.addEventListener('click', async function () {
+            try {
+                await navigator.clipboard.writeText(
+                    codigo.textContent.trim()
+                );
+
+                botao.textContent = 'Copiado!';
+                mensagem.textContent = 'Protocolo copiado com sucesso.';
+            } catch (erro) {
+                mensagem.textContent =
+                    'Não foi possível copiar automaticamente. ' +
+                    'Selecione o protocolo e copie manualmente.';
+            }
+        });
+    </script>
+</body>
+</html>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
