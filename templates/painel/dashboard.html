@@ -7,7 +7,10 @@
 <body>
     <h1>Painel de Denuncias</h1>
 
-    <h2>Denúncias recebidas</h2>
+    <form action="{% url 'logout-usuario' %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Sair</button>
+    </form>
 
     {% if denuncias %}
         <table border="1" cellpadding="8">

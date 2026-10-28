@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - VigiaFácil</title>
+</head>
+
+<body>
+    <main class="login-container">
+        <h1>VigiaFácil</h1>
+
+        {% if messages %}
+            {% for message in messages %}
+                <p class="mensagem-erro">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+
+        {% if form.errors %}
+            <p class="mensagem-erro">
+                Verifique seu usuário e sua senha.
+            </p>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <label for="username">Usuário</label>
+            <input
+                type="text"
+                id="username"
+                name="username"
+                autocomplete="username"
+                required
+                autofocus
+            >
+
+            <label for="password">Senha</label>
+            <input
+                type="password"
+                id="password"
+                name="password"
+                autocomplete="current-password"
+                required
+            >
+
+            <button type="submit">Entrar</button>
+        </form>
+
+    </main>
+</body>
+</html>

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'denuncia',
     'painel',
+    'usuario'
 ]
 
 MIDDLEWARE = [
@@ -123,3 +124,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = '/usuario/login/'
+LOGIN_REDIRECT_URL = '/painel/'
+LOGOUT_REDIRECT_URL = '/usuario/login/'
