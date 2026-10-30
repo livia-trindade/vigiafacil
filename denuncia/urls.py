@@ -24,4 +24,8 @@ urlpatterns = [
         views.delete,
         name='delete-denuncia'
     ),
+    path(
+        'acompanhar/', 
+        views.acompanhar, 
+        name='acompanhar-denuncia'),
 ]

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acompanhar denúncia</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+
+        <label for="protocolo">Código do protocolo:</label>
+
+        <input
+            type="text"
+            name="protocolo"
+            id="protocolo"
+            maxlength="10"
+            required
+            placeholder="Digite seu protocolo"
+        >
+
+        <button type="submit">Consultar</button>
+    </form>
+
+    {% if erro %}
+        <p>{{ erro }}</p>
+    {% endif %}
+
+    {% if denuncia %}
+        <h2>Resultado da consulta</h2>
+
+        <p><strong>Protocolo:</strong> {{ denuncia.protocolo }}</p>
+
+    <p>
+    <strong>Status da denúncia:</strong>
+    {{ denuncia.get_status_display }}
+    </p>
+
+    {% if denuncia.status == 'pendente' %}
+        <p>Sua denúncia ainda não foi analisada pela equipe de Vigilância em Saúde.</p>
+
+    {% elif denuncia.status == 'em_analise' %}
+        <p>Sua denúncia está sendo analisada pela equipe de Vigilância em Saúde.</p>
+
+    {% elif denuncia.status == 'em_andamento' %}
+     <p>Sua denúncia está em andamento. As providências necessárias estão sendo tomadas.</p>
+
+    {% elif denuncia.status == 'concluida' %}
+     <p>Sua denúncia foi analisada e concluída.</p>
+    {% endif %}
+        {% endif %}
+
+    <a href="{% url 'registro-denuncia' %}">Registrar nova denúncia</a>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+</body>
+</html>

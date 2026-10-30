@@ -52,6 +52,27 @@ def sucesso(request, protocolo):
         'denuncia': denuncia
     })
 
+def acompanhar(request):
+    denuncia = None
+    erro = None
+
+    if request.method == 'POST':
+        protocolo = request.POST.get('protocolo', '').strip()
+
+        if protocolo:
+            denuncia = Denuncia.objects.filter(
+                protocolo=protocolo
+            ).only('protocolo', 'status').first()
+
+            if denuncia is None:
+                erro = 'Nenhuma denúncia foi encontrada com esse protocolo.'
+        else:
+            erro = 'Informe o código do protocolo.'
+
+    return render(request, 'denuncia/acompanhar.html', {
+        'denuncia': denuncia,
+        'erro': erro
+    })
 
 @login_required
 @permission_required('denuncia.change_denuncia', raise_exception=True)
