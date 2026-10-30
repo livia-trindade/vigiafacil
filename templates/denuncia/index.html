@@ -1,19 +1,98 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Denúncias</title>
+    <link rel="stylesheet" href="{% static 'denuncia/css/style.css' %}">
+    <title>Vigia Fácil</title>
 </head>
 
 <body>
-    <main class="container">
-        <h1>tela inicial :)</h1>
+    <header>
+        <div class="container cabecalho-conteudo">
+            <a href="{% url 'index-denuncia' %}" class="brasao">
+            <img src="{% static 'denuncia/images/brasao-prefeitura.png' %}" alt="VigiaFácil - Página inicial">
+            </a>
+        
+            <h1  class="titulo">VIGIA FÁCIL</h1>
+            <nav class="acoes">
+                <a href="#" class="link-acompanhar">Acompanhar denúncia</a>
+            
+                <a href="{% url 'registro-denuncia' %}" class="btn-denunciar">Denunciar</a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container apresentacao"> 
+            <div class="apresentacao-texto">
+                <h2>SUA DENÚNCIA IMPORTA!</h2>
+                <p>Ajude a proteger a saúde pública em Vitória da Conquista</p>
+                
+                <div class="apresentacao-btns">
+                    <a href="{% url 'registro-denuncia' %}" class="btn-primario">Denunciar</a>
+                    <a href="#" class="link-secundario">Acompanhar denúncia</a>
+                </div>
+            </div>
 
-        <a href="{% url 'create-denuncia' %}">
-            Registrar denúncia
-        </a>
+            <div class="apresentacao-info">
+                <p class="apresentacao-info-item">Anonimato Opcional:...</p>
+                <p class="apresentacao-info-item">Acompanhamento de denúncia:...</p>
+                <p class="apresentacao-info-item">Direcionamento automático para o setor responsável:...</p>
+                <p class="apresentacao-info-item">Direcionamento automático para o setor responsável:...</p>
+                <p>...</p>
+            </div>
+        </div>
 
+        <div class="container informacoes">
+            <div class="informacoes-titulo">
+                <h2>O que você pode denunciar</h2>
+            </div>
+
+            <div class="informacoes-lista">
+                <div class="informacoes-item">
+                </div>
+                <div class="informacoes-item">
+                </div>
+                <div class="informacoes-item">
+                </div>
+                <div class="informacoes-item">
+                </div>
+                <div class="informacoes-item">
+                </div>
+                <div class="informacoes-item">
+                </div>
+            </div>
+        </div>
+
+        <div class="container funcionamento">
+            <div class="funcionamento-titulo">
+                <h2>Como funciona</h2>
+            </div>
+
+            <div class="funcionamento-lista">
+                <div class="funcionamento-item">
+                    <span class="passo-numero">1</span>
+                    <p>Escolha se deseja se identificar</p>
+                </div>
+                <div class="funcionamento-item">
+                    <span class="passo-numero">2</span>
+                    <p>Registre a denúncia</p>
+                </div>
+                <div class="funcionamento-item">
+                    <span class="passo-numero">3</span>
+                    <p>Receba o código e cadastre uma senha</p>
+                </div>
+                <div class="funcionamento-item">
+                    <span class="passo-numero">4</span>
+                    <p>Acompanhe sua denúncia</p>
+                </div>
+            </div>
+        </div>
+    </main>    
+    <footer>
+        <div class="rodape"></div>
+    </footer>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
 </body>
 </html>
-<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
