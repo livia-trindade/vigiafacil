@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required, permission_required
@@ -26,14 +25,16 @@ def detalha(request, id_denuncia):
 
 def registro(request):
     if request.method == 'POST':
-        form = DenunciaForm(request.POST)
+        form = DenunciaForm(request.POST, request.FILES)
 
         if form.is_valid():
             denuncia = form.save()
+
             return redirect(
                 'sucesso-denuncia',
                 protocolo=denuncia.protocolo
             )
+
     else:
         form = DenunciaForm()
 
