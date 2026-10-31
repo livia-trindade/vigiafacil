@@ -14,6 +14,70 @@
 
         <button type="submit">Enviar Denúncia</button>
     </form>
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const categoria = document.getElementById('id_tipo');
+    const problema = document.getElementById('id_problema');
+
+    const problemasPorCategoria = {
+        'mosquitos_insetos': [
+            ['dengue', 'Dengue'],
+            ['barbeiro', 'Barbeiro'],
+            ['carrapatos', 'Carrapatos'],
+            ['outros_insetos', 'Outros problemas relacionados a mosquitos e insetos']
+        ],
+
+        'animais': [
+            ['animal_peconhento', 'Animal peçonhento'],
+            ['animal_silvestre', 'Animal silvestre'],
+            ['suspeita_raiva', 'Suspeita de raiva'],
+            ['maus_tratos_abandono', 'Maus-tratos ou abandono']
+        ],
+
+        'alimentacao_mercado': [
+            ['comida_estragada', 'Comida estragada'],
+            ['sujeira', 'Sujeira'],
+            ['suspeita_contaminacao', 'Suspeita de contaminação']
+        ],
+
+        'agua_esgoto': [
+            ['agua_suja_cheiro', 'Água suja ou com cheiro'],
+            ['esgoto_ceu_aberto', 'Esgoto a céu aberto'],
+            ['poco_contaminado', 'Poço contaminado']
+        ],
+
+        'empresas_trabalho': [
+            ['falta_epi', 'Falta de EPI'],
+            ['poeira_fumaca', 'Poeira ou fumaça excessiva'],
+            ['condicoes_insalubres', 'Condições insalubres']
+        ],
+
+        'outro': [
+            ['outro_problema', 'Outro problema']
+        ]
+    };
+
+    function atualizarProblemas() {
+        const categoriaSelecionada = categoria.value;
+        const problemas = problemasPorCategoria[categoriaSelecionada] || [];
+
+        problema.innerHTML = '<option value="">Selecione um problema</option>';
+
+        problemas.forEach(function (item) {
+            const option = document.createElement('option');
+            option.value = item[0];
+            option.textContent = item[1];
+
+            problema.appendChild(option);
+        });
+    }
+
+    categoria.addEventListener('change', atualizarProblemas);
+
+    atualizarProblemas();
+});
+</script>
 </body>
 </html>
 
