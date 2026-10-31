@@ -11,14 +11,20 @@
         <h1>Detalhes da Denúncia</h1>
 
         <div class="info">
+
             <p>
                 <strong>Protocolo:</strong>
                 {{ denuncia.protocolo }}
             </p>
 
             <p>
-                <strong>Tipo:</strong>
+                <strong>Categoria:</strong>
                 {{ denuncia.get_tipo_display }}
+            </p>
+
+            <p>
+                <strong>Problema específico:</strong>
+                {{ denuncia.get_problema_display }}
             </p>
 
             <p>
@@ -28,7 +34,12 @@
 
             <p>
                 <strong>Endereço:</strong>
-                {{ denuncia.endereco }}
+                {{ denuncia.endereco|default:"Não informado" }}
+            </p>
+
+            <p>
+                <strong>Ponto de referência:</strong>
+                {{ denuncia.ponto_referencia|default:"Não informado" }}
             </p>
 
             <p>
@@ -42,6 +53,38 @@
             </p>
 
             <p>
+                <strong>Fotografia:</strong>
+                {% if denuncia.foto %}
+                    <a href="{{ denuncia.foto.url }}" target="_blank">
+                        Visualizar fotografia
+                    </a>
+                {% else %}
+                    Nenhuma fotografia anexada.
+                {% endif %}
+            </p>
+
+            <p>
+                <strong>Modalidade:</strong>
+                {% if denuncia.anonima %}
+                    Anônima
+                {% else %}
+                    Identificada
+                {% endif %}
+            </p>
+
+            {% if not denuncia.anonima %}
+                <p>
+                    <strong>Nome do denunciante:</strong>
+                    {{ denuncia.nome_denunciante }}
+                </p>
+
+                <p>
+                    <strong>Telefone:</strong>
+                    {{ denuncia.telefone_denunciante }}
+                </p>
+            {% endif %}
+
+            <p>
                 <strong>Status:</strong>
                 <span class="status">
                     {{ denuncia.get_status_display }}
@@ -52,31 +95,33 @@
                 <strong>Data de registro:</strong>
                 {{ denuncia.data_criacao|date:"d/m/Y H:i" }}
             </p>
+
+            <p>
+                <strong>Última atualização:</strong>
+                {{ denuncia.data_atualizacao|date:"d/m/Y H:i" }}
+            </p>
+
         </div>
 
         <h2>Ações</h2>
 
         <div class="acoes">
-            <a
-                class="botao"
-                href="{% url 'atualizar-status' denuncia.id %}"
-            >
+
+            <a class="botao"
+               href="{% url 'atualizar-status' denuncia.id %}">
                 Atualizar status
             </a>
 
-            <a
-                class="botao"
-                href="{% url 'registrar-acompanhamento' denuncia.id %}"
-            >
+            <a class="botao"
+               href="{% url 'registrar-acompanhamento' denuncia.id %}">
                 Registrar acompanhamento
             </a>
 
-            <a
-                class="botao secundario"
-                href="{% url 'dashboard-painel' %}"
-            >
+            <a class="botao secundario"
+               href="{% url 'dashboard-painel' %}">
                 Voltar ao painel
             </a>
+
         </div>
 
         <hr>
@@ -85,7 +130,9 @@
 
         {% if acompanhamentos %}
             {% for acompanhamento in acompanhamentos %}
+
                 <div class="acompanhamento">
+
                     <p>
                         <strong>Data:</strong>
                         {{ acompanhamento.data_registro|date:"d/m/Y H:i" }}
@@ -100,13 +147,16 @@
                         <strong>Providência registrada:</strong>
                         {{ acompanhamento.descricao }}
                     </p>
+
                 </div>
+
             {% endfor %}
         {% else %}
             <p class="vazio">
                 Nenhum acompanhamento foi registrado para esta denúncia.
             </p>
         {% endif %}
+
     </main>
 </body>
 </html>

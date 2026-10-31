@@ -7,12 +7,12 @@
 <body>
     <h1>Registrar Denúncia</h1>
 
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 
         {{ form.as_p }}
 
-        <button type="submit">Enviar Denúncia</button>
+        <button type="submit">Enviar denúncia</button>
     </form>
     <script>
 document.addEventListener('DOMContentLoaded', function () {
