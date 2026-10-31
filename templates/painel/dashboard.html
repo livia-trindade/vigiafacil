@@ -2,45 +2,76 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Painel </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Denúncias</title>
 </head>
+
 <body>
-    <h1>Painel de Denuncias</h1>
 
-    <form action="{% url 'logout-usuario' %}" method="post">
-    {% csrf_token %}
-    <button type="submit">Sair</button>
-    </form>
+    <main class="container">
 
-    {% if denuncias %}
-        <table border="1" cellpadding="8">
-            <thead>
-                <tr>
-                    <th>Protocolo</th>
-                    <th>Tipo</th>
-                    <th>Bairro</th>
-                    <th>Status</th>
-                    <th>Ação</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for denuncia in denuncias %}
+        <header>
+            <h1>Painel de Denúncias</h1>
+
+            <form action="{% url 'logout-usuario' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Sair</button>
+            </form>
+        </header>
+
+        <h2>Denúncias registradas</h2>
+
+        {% if denuncias %}
+
+            <table border="1" cellpadding="8">
+                <thead>
                     <tr>
-                        <td>{{ denuncia.protocolo }}</td>
-                        <td>{{ denuncia.get_tipo_display }}</td>
-                        <td>{{ denuncia.bairro }}</td>
-                        <td>{{ denuncia.get_status_display }}</td>
-                        <td>
-                            <a href="{% url 'detalha-painel' denuncia.id %}">
-                                ..
-                            </a>
-                        </td>
+                        <th>Protocolo</th>
+                        <th>Categoria</th>
+                        <th>Problema específico</th>
+                        <th>Bairro</th>
+                        <th>Data de registro</th>
+                        <th>Status</th>
+                        <th>Ação</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>Nenhuma denúncia cadastrada.</p>
-    {% endif %}
+                </thead>
+
+                <tbody>
+                    {% for denuncia in denuncias %}
+                        <tr>
+                            <td>{{ denuncia.protocolo }}</td>
+
+                            <td>{{ denuncia.get_tipo_display }}</td>
+
+                            <td>{{ denuncia.get_problema_display }}</td>
+
+                            <td>{{ denuncia.bairro }}</td>
+
+                            <td>
+                                {{ denuncia.data_criacao|date:"d/m/Y H:i" }}
+                            </td>
+
+                            <td>
+                                {{ denuncia.get_status_display }}
+                            </td>
+
+                            <td>
+                                <a href="{% url 'detalha-painel' denuncia.id %}">
+                                    Ver detalhes
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        {% else %}
+
+            <p>Nenhuma denúncia cadastrada.</p>
+
+        {% endif %}
+
+    </main>
+
 </body>
 </html>
