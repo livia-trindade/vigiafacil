@@ -15,16 +15,6 @@ urlpatterns = [
         name='detalha-denuncia'
     ),
     path(
-        'update/<int:id_denuncia>/',
-        views.update,
-        name='update-denuncia'
-    ),
-    path(
-        'delete/<int:id_denuncia>/',
-        views.delete,
-        name='delete-denuncia'
-    ),
-    path(
         'acompanhar/', 
         views.acompanhar, 
         name='acompanhar-denuncia'),

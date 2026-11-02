@@ -75,35 +75,3 @@ def acompanhar(request):
         'erro': erro
     })
 
-@login_required
-@permission_required('denuncia.change_denuncia', raise_exception=True)
-def update(request, id_denuncia):
-    denuncia = get_object_or_404(Denuncia, id=id_denuncia)
-
-    if request.method == 'POST':
-        form = DenunciaForm(request.POST, instance=denuncia)
-
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/denuncia/')
-    else:
-        form = DenunciaForm(instance=denuncia)
-
-    return render(request, 'denuncia/update.html', {
-        'form': form,
-        'denuncia': denuncia
-    })
-
-
-@login_required
-@permission_required('denuncia.delete_denuncia', raise_exception=True)
-def delete(request, id_denuncia):
-    denuncia = get_object_or_404(Denuncia, id=id_denuncia)
-
-    if request.method == 'POST':
-        denuncia.delete()
-        return HttpResponseRedirect('/denuncia/')
-
-    return render(request, 'denuncia/delete.html', {
-        'denuncia': denuncia
-    })
