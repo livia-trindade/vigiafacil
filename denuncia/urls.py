@@ -10,11 +10,6 @@ urlpatterns = [
         name='sucesso-denuncia'
     ),
     path(
-        '<int:id_denuncia>/',
-        views.detalha,
-        name='detalha-denuncia'
-    ),
-    path(
         'acompanhar/', 
         views.acompanhar, 
         name='acompanhar-denuncia'),

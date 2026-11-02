@@ -13,16 +13,6 @@ def index(request):
         'denuncias': denuncias
     })
 
-
-@login_required
-@permission_required('denuncia.view_denuncia', raise_exception=True)
-def detalha(request, id_denuncia):
-    denuncia = get_object_or_404(Denuncia, id=id_denuncia)
-    return render(request, 'denuncia/detalha.html', {
-        'denuncia': denuncia
-    })
-
-
 def registro(request):
     if request.method == 'POST':
         form = DenunciaForm(request.POST, request.FILES)
