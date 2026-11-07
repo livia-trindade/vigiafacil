@@ -1,162 +1,171 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalhes da Denúncia</title>
+    <link rel="stylesheet" href="{% static 'painel/css/detalhes.css' %}">
+    <title>Detalhes da Denúncia #{{ denuncia.protocolo }} | Vigia Fácil</title>
 </head>
 
 <body>
-    <main class="container">
-        <h1>Detalhes da Denúncia</h1>
+    <header>
+        <div class="container cabecalho-conteudo">
+            <a href="{% url 'dashboard-painel' %}" class="brasao">
+                <img src="{% static 'denuncia/images/brasao-prefeitura.png' %}" alt="Brasão da Prefeitura">
+            </a>
 
-        <div class="info">
+            <h1 class="titulo">VIGIA FÁCIL</h1>
 
-            <p>
-                <strong>Protocolo:</strong>
-                {{ denuncia.protocolo }}
-            </p>
+            <div class="acoes-cabecalho">
+                <span class="identificacao">Painel do Vigilante</span>
 
-            <p>
+                <form action="{% url 'logout-usuario' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-sair">Sair</button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <main class="container detalhes-pagina">
+        <section class="topo-detalhes">
+            <div class="titulo-bloco">
+                <h2>Detalhes da Denúncia</h2>
+                <p>Protocolo: <span class="protocolo-destaque">{{ denuncia.protocolo }}</span></p>
+            </div>
+
+            <div class="status-box">
+                <span class="status-rotulo">Status atual:</span>
+                <span class="badge-status">{{ denuncia.get_status_display }}</span>
+            </div>
+        </section>
+
+        <!-- CARTÃO PRINCIPAL DE INFORMAÇÕES -->
+        <section class="card-bloco info-grid">
+            <div class="campo">
                 <strong>Categoria:</strong>
-                {{ denuncia.get_tipo_display }}
-            </p>
+                <span>{{ denuncia.get_tipo_display }}</span>
+            </div>
 
-            <p>
+            <div class="campo">
                 <strong>Problema específico:</strong>
-                {{ denuncia.get_problema_display }}
-            </p>
+                <span>{{ denuncia.get_problema_display }}</span>
+            </div>
 
-            <p>
-                <strong>Descrição:</strong>
-                {{ denuncia.descricao }}
-            </p>
-
-            <p>
-                <strong>Endereço:</strong>
-                {{ denuncia.endereco|default:"Não informado" }}
-            </p>
-
-            <p>
-                <strong>Ponto de referência:</strong>
-                {{ denuncia.ponto_referencia|default:"Não informado" }}
-            </p>
-
-            <p>
+            <div class="campo">
                 <strong>Bairro:</strong>
-                {{ denuncia.bairro }}
-            </p>
+                <span>{{ denuncia.bairro }}</span>
+            </div>
 
-            <p>
+            <div class="campo">
                 <strong>Data da ocorrência:</strong>
-                {{ denuncia.data_ocorrencia|date:"d/m/Y"|default:"Não informada" }}
-            </p>
+                <span>{{ denuncia.data_ocorrencia|date:"d/m/Y"|default:"Não informada" }}</span>
+            </div>
 
-            <p>
-                <strong>Fotografia:</strong>
-                {% if denuncia.foto %}
-                    <a href="{{ denuncia.foto.url }}" target="_blank">
-                        Visualizar fotografia
-                    </a>
-                {% else %}
-                    Nenhuma fotografia anexada.
-                {% endif %}
-            </p>
+            <div class="campo campo-completo">
+                <strong>Endereço:</strong>
+                <span>{{ denuncia.endereco|default:"Não informado" }}</span>
+            </div>
 
-            <p>
+            <div class="campo campo-completo">
+                <strong>Ponto de referência:</strong>
+                <span>{{ denuncia.ponto_referencia|default:"Não informado" }}</span>
+            </div>
+
+            <div class="campo campo-completo">
+                <strong>Descrição do fato:</strong>
+                <p class="texto-descricao">{{ denuncia.descricao }}</p>
+            </div>
+
+            <div class="campo">
                 <strong>Modalidade:</strong>
-                {% if denuncia.anonima %}
-                    Anônima
-                {% else %}
-                    Identificada
-                {% endif %}
-            </p>
+                <span>{% if denuncia.anonima %}Anônima{% else %}Identificada{% endif %}</span>
+            </div>
 
             {% if not denuncia.anonima %}
-                <p>
-                    <strong>Nome do denunciante:</strong>
-                    {{ denuncia.nome_denunciante }}
-                </p>
-
-                <p>
-                    <strong>Telefone:</strong>
-                    {{ denuncia.telefone_denunciante }}
-                </p>
-            {% endif %}
-
-            <p>
-                <strong>Status:</strong>
-                <span class="status">
-                    {{ denuncia.get_status_display }}
-                </span>
-            </p>
-
-            <p>
-                <strong>Data de registro:</strong>
-                {{ denuncia.data_criacao|date:"d/m/Y H:i" }}
-            </p>
-
-            <p>
-                <strong>Última atualização:</strong>
-                {{ denuncia.data_atualizacao|date:"d/m/Y H:i" }}
-            </p>
-
-        </div>
-
-        <h2>Ações</h2>
-
-        <div class="acoes">
-
-            <a class="botao"
-               href="{% url 'atualizar-status' denuncia.id %}">
-                Atualizar status
-            </a>
-
-            <a class="botao"
-               href="{% url 'registrar-acompanhamento' denuncia.id %}">
-                Registrar acompanhamento
-            </a>
-
-            <a class="botao secundario"
-               href="{% url 'dashboard-painel' %}">
-                Voltar ao painel
-            </a>
-
-        </div>
-
-        <hr>
-
-        <h2>Histórico de acompanhamentos</h2>
-
-        {% if acompanhamentos %}
-            {% for acompanhamento in acompanhamentos %}
-
-                <div class="acompanhamento">
-
-                    <p>
-                        <strong>Data:</strong>
-                        {{ acompanhamento.data_registro|date:"d/m/Y H:i" }}
-                    </p>
-
-                    <p>
-                        <strong>Vigilante:</strong>
-                        {{ acompanhamento.vigilante.username }}
-                    </p>
-
-                    <p>
-                        <strong>Providência registrada:</strong>
-                        {{ acompanhamento.descricao }}
-                    </p>
-
+                <div class="campo">
+                    <strong>Denunciante:</strong>
+                    <span>{{ denuncia.nome_denunciante }}</span>
                 </div>
 
-            {% endfor %}
-        {% else %}
-            <p class="vazio">
-                Nenhum acompanhamento foi registrado para esta denúncia.
-            </p>
-        {% endif %}
+                <div class="campo">
+                    <strong>Telefone:</strong>
+                    <span>{{ denuncia.telefone_denunciante }}</span>
+                </div>
+            {% endif %}
 
+            <div class="campo">
+                <strong>Data de registro:</strong>
+                <span>{{ denuncia.data_criacao|date:"d/m/Y H:i" }}</span>
+            </div>
+
+            <div class="campo">
+                <strong>Última atualização:</strong>
+                <span>{{ denuncia.data_atualizacao|date:"d/m/Y H:i" }}</span>
+            </div>
+
+            <div class="campo campo-completo">
+                <strong>Fotografia anexa:</strong>
+                {% if denuncia.foto %}
+                    <div>
+                        <a href="{{ denuncia.foto.url }}" target="_blank" class="btn-foto">
+                            Visualizar fotografia
+                        </a>
+                    </div>
+                {% else %}
+                    <span>Nenhuma fotografia anexada.</span>
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- AÇÕES -->
+        <section class="secao-acoes">
+            <h3>Ações</h3>
+            <div class="acoes-lista">
+                <a class="btn-acao btn-primario" href="{% url 'atualizar-status' denuncia.id %}">
+                    Atualizar status
+                </a>
+
+                <a class="btn-acao btn-primario" href="{% url 'registrar-acompanhamento' denuncia.id %}">
+                    Registrar acompanhamento
+                </a>
+
+                <a class="btn-acao btn-secundario" href="{% url 'dashboard-painel' %}">
+                    Voltar ao painel
+                </a>
+            </div>
+        </section>
+
+        <!-- HISTÓRICO DE ACOMPANHAMENTOS -->
+        <section class="secao-historico">
+            <h3>Histórico de acompanhamentos</h3>
+
+            {% if acompanhamentos %}
+                <div class="historico-lista">
+                    {% for acompanhamento in acompanhamentos %}
+                        <div class="acompanhamento-item">
+                            <div class="acompanhamento-cabecalho">
+                                <span><strong>Data:</strong> {{ acompanhamento.data_registro|date:"d/m/Y H:i" }}</span>
+                                <span><strong>Vigilante:</strong> {{ acompanhamento.vigilante.username }}</span>
+                            </div>
+                            <p class="acompanhamento-texto">
+                                <strong>Providência registrada:</strong><br>
+                                {{ acompanhamento.descricao }}
+                            </p>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="card-bloco vazio">
+                    <p>Nenhum acompanhamento foi registrado para esta denúncia até o momento.</p>
+                </div>
+            {% endif %}
+        </section>
     </main>
+
+    <footer>
+        <div class="rodape"></div>
+    </footer>
 </body>
 </html>
