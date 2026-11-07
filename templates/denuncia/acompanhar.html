@@ -1,57 +1,117 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acompanhar denúncia</title>
+    <link rel="stylesheet" href="{% static 'denuncia/css/acompanhar.css' %}">
+    <title>Acompanhar Denúncia | Vigia Fácil</title>
 </head>
+
 <body>
-    <form method="POST">
-        {% csrf_token %}
+    <!-- CABEÇALHO PADRÃO DO CIDADÃO -->
+    <header>
+        <div class="container cabecalho-conteudo">
+            <a href="{% url 'dashboard-painel' %}" class="brasao">
+                <img src="{% static 'denuncia/images/brasao-prefeitura.png' %}" alt="Brasão da Prefeitura">
+            </a>
 
-        <label for="protocolo">Código do protocolo:</label>
+            <h1 class="titulo">VIGIA FÁCIL</h1>
 
-        <input
-            type="text"
-            name="protocolo"
-            id="protocolo"
-            maxlength="10"
-            required
-            placeholder="Digite seu protocolo"
-        >
+            <div class="acoes-cabecalho">
+                <a href="{% url 'registro-denuncia' %}" class="btn-denunciar">
+                    Fazer Denúncia
+                </a>
+            </div>
+        </div>
+    </header>
 
-        <button type="submit">Consultar</button>
-    </form>
+    <main class="container pagina-acompanhar">
+        <section class="topo-secao">
+            <h2>Acompanhar Denúncia</h2>
+            <p>Consulte o andamento da sua solicitação utilizando o código de protocolo gerado no momento do registro.</p>
+        </section>
 
-    {% if erro %}
-        <p>{{ erro }}</p>
-    {% endif %}
+        <!-- CARTÃO DO FORMULÁRIO DE CONSULTA -->
+        <section class="card-bloco form-consulta-card">
+            <form method="POST" class="form-protocolo">
+                {% csrf_token %}
 
-    {% if denuncia %}
-        <h2>Resultado da consulta</h2>
+                <div class="campo-grupo">
+                    <label for="protocolo">Código do protocolo:</label>
+                    <input
+                        type="text"
+                        name="protocolo"
+                        id="protocolo"
+                        maxlength="10"
+                        required
+                        placeholder="Ex: ABC1234567"
+                        autocomplete="off"
+                    >
+                </div>
 
-        <p><strong>Protocolo:</strong> {{ denuncia.protocolo }}</p>
+                <button type="submit" class="btn-consultar">Consultar</button>
+            </form>
+        </section>
 
-    <p>
-    <strong>Status da denúncia:</strong>
-    {{ denuncia.get_status_display }}
-    </p>
-
-    {% if denuncia.status == 'pendente' %}
-        <p>Sua denúncia ainda não foi analisada pela equipe de Vigilância em Saúde.</p>
-
-    {% elif denuncia.status == 'em_analise' %}
-        <p>Sua denúncia está sendo analisada pela equipe de Vigilância em Saúde.</p>
-
-    {% elif denuncia.status == 'em_andamento' %}
-     <p>Sua denúncia está em andamento. As providências necessárias estão sendo tomadas.</p>
-
-    {% elif denuncia.status == 'concluida' %}
-     <p>Sua denúncia foi analisada e concluída.</p>
-    {% endif %}
+        <!-- MENSAGEM DE ERRO -->
+        {% if erro %}
+            <section class="card-bloco alerta-erro">
+                <p>{{ erro }}</p>
+            </section>
         {% endif %}
 
-    <a href="{% url 'registro-denuncia' %}">Registrar nova denúncia</a>
-<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+        <!-- CARTÃO COM O RESULTADO DA CONSULTA -->
+        {% if denuncia %}
+            <section class="card-bloco resultado-card">
+                <h3>Resultado da consulta</h3>
+
+                <div class="resultado-grid">
+                    <div class="resultado-item">
+                        <strong>Protocolo:</strong>
+                        <span class="protocolo-destaque">{{ denuncia.protocolo }}</span>
+                    </div>
+
+                    <div class="resultado-item">
+                        <strong>Status da denúncia:</strong>
+                        <span class="badge-status">{{ denuncia.get_status_display }}</span>
+                    </div>
+                </div>
+
+                <div class="mensagem-status">
+                    <strong>Situação atual:</strong>
+                    <p>
+                        {% if denuncia.status == 'pendente' %}
+                            Sua denúncia ainda não foi analisada pela equipe de Vigilância em Saúde.
+                        {% elif denuncia.status == 'em_analise' %}
+                            Sua denúncia está sendo analisada pela equipe de Vigilância em Saúde.
+                        {% elif denuncia.status == 'em_andamento' %}
+                            Sua denúncia está em andamento. As providências necessárias estão sendo tomadas.
+                        {% elif denuncia.status == 'concluida' %}
+                            Sua denúncia foi analisada e concluída.
+                        {% else %}
+                            {{ denuncia.get_status_display }}
+                        {% endif %}
+                    </p>
+                </div>
+            </section>
+        {% endif %}
+
+    </main>
+
+    <footer>
+        <div class="rodape"></div>
+    </footer>
+
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+    </script>
 </body>
 </html>
