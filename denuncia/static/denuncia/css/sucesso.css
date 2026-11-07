@@ -1,0 +1,276 @@
+body {
+    margin: 0;
+    color: #000000;
+    background-color: #ffffff;
+}
+
+a {
+    text-decoration: none;
+}
+
+button {
+    font-family: inherit;
+}
+
+.container {
+    margin: 0 auto;
+    padding-left: 5rem;
+    padding-right: 5rem;
+}
+
+/* CABEÇALHO */
+
+header {
+    border-bottom: 1px solid #000000;
+    background-color: #ffffff;
+}
+
+.cabecalho-conteudo {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+header img {
+    width: auto;
+    height: 6rem;
+}
+
+.titulo {
+    margin: 0;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.acoes-cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.link-acompanhar {
+    color: #000000;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.link-acompanhar:hover {
+    text-decoration: underline;
+}
+
+/* CONTEÚDO PRINCIPAL */
+
+.pagina-sucesso {
+    padding-top: 3rem;
+    padding-bottom: 4rem;
+    max-width: 800px;
+}
+
+.topo-secao {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #000000;
+    padding-bottom: 1.5rem;
+}
+
+.topo-secao h2 {
+    margin: 0 0 0.5rem;
+    font-size: 2.2rem;
+}
+
+.topo-secao p {
+    margin: 0;
+    font-size: 1.05rem;
+}
+
+/* CARTÃO PADRÃO #D9D9D9 */
+
+.card-bloco {
+    background-color: #D9D9D9;
+    border-radius: 5px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.protocolo-card h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.4rem;
+}
+
+.instrucao {
+    margin: 0 0 1.5rem;
+    font-size: 1rem;
+}
+
+/* BLOCO DO CÓDIGO E BOTÃO */
+
+.protocolo-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    padding: 0.75rem 1.25rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.codigo-texto {
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 0.08em;
+    font-family: monospace, Arial, sans-serif;
+    color: #000000;
+    user-select: all;
+}
+
+.btn-copiar {
+    color: #ffffff;
+    background-color: #000000;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    padding: 0.55rem 1.25rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-copiar:hover,
+.btn-primario:hover {
+    background-color: #333333;
+}
+
+/* FEEDBACK DE CÓPIA */
+
+.mensagem {
+    margin: 0.75rem 0 0;
+    font-size: 0.9rem;
+    font-weight: bold;
+    min-height: 1.2rem;
+    color: #000000;
+}
+
+/* BOX DE AVISO */
+
+.aviso-box {
+    margin-top: 1.5rem;
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    padding: 1rem;
+}
+
+.aviso-box strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.95rem;
+}
+
+.aviso-box p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* BOTÕES DE AÇÃO INFERIORES */
+
+.acoes-finais {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.btn-acao {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    border-radius: 5px;
+    padding: 0.65rem 1.25rem;
+    cursor: pointer;
+}
+
+.btn-primario {
+    color: #ffffff;
+    background-color: #000000;
+    border: 1px solid #000000;
+}
+
+.btn-secundario {
+    color: #000000;
+    background-color: #ffffff;
+    border: 1px solid #000000;
+}
+
+.btn-secundario:hover {
+    background-color: #f0f0f0;
+}
+
+/* RODAPÉ */
+
+.rodape {
+    background-color: #D9D9D9;
+    margin-top: 4rem;
+    height: 100px;
+}
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 900px) {
+    .container {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    .cabecalho-conteudo {
+        grid-template-columns: auto 1fr;
+        gap: 1rem;
+    }
+
+    .titulo {
+        text-align: left;
+    }
+
+    .acoes-cabecalho {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 650px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    header img {
+        height: 4rem;
+    }
+
+    .titulo {
+        font-size: 1.5rem;
+    }
+
+    .protocolo-box {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+
+    .btn-copiar {
+        width: 100%;
+    }
+
+    .acoes-finais {
+        flex-direction: column;
+    }
+
+    .btn-acao {
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+    }
+}

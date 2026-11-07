@@ -1,42 +1,83 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Denúncia registrada</title>
+    <link rel="stylesheet" href="{% static 'denuncia/css/sucesso.css' %}">
+    <title>Denúncia Registrada | Vigia Fácil</title>
 </head>
 
 <body>
-    <main class="container">
-        <h1>Denúncia registrada!</h1>
+    <!-- CABEÇALHO PADRÃO -->
+    <header>
+        <div class="container cabecalho-conteudo">
+            <a href="{% url 'index-denuncia' %}" class="brasao">
+                <img src="{% static 'denuncia/images/brasao-prefeitura.png' %}" alt="Brasão da Prefeitura">
+            </a>
 
-        <p>Sua denúncia foi enviada com sucesso.</p>
+            <h1 class="titulo">VIGIA FÁCIL</h1>
 
-        <p><strong>Guarde seu número de protocolo:</strong></p>
-
-        <div class="protocolo">
-            <span id="codigo">{{ denuncia.protocolo }}</span>
-
-            <button type="button" id="copiar">
-                Copiar
-            </button>
+            <div class="acoes-cabecalho">
+                <a href="{% url 'acompanhar-denuncia' %}" class="link-acompanhar">
+                    Acompanhar denúncia
+                </a>
+            </div>
         </div>
+    </header>
 
-        <p id="mensagem" class="mensagem" aria-live="polite"></p>
+    <main class="container pagina-sucesso">
+        <section class="topo-secao">
+            <h2>Denúncia registrada!</h2>
+            <p>Sua denúncia foi enviada com sucesso à equipe de Vigilância em Saúde.</p>
+        </section>
 
-        <p class="aviso">
-            Guarde esse código para consultar sua denúncia futuramente.
-            Ele não será exibido novamente nesta página se você sair dela.
-        </p>
+        <section class="card-bloco protocolo-card">
+            <h3>Número do Protocolo</h3>
+            <p class="instrucao">Guarde seu código para consultar o andamento da denúncia futuramente:</p>
 
-        <a href="{% url 'registro-denuncia' %}">
-            Registrar outra denúncia
-        </a>
+            <div class="protocolo-box">
+                <span id="codigo" class="codigo-texto">{{ denuncia.protocolo }}</span>
+                <button type="button" id="copiar" class="btn-copiar">
+                    Copiar
+                </button>
+            </div>
 
-        <a href="{% url 'index-denuncia' %}">
-            Voltar para pagina inciial
-        </a>
+            <p id="mensagem" class="mensagem" aria-live="polite"></p>
+
+            <div class="aviso-box">
+                <strong>Importante:</strong>
+                <p>Anote ou guarde este código com segurança. Ele não será reexibido nesta tela após você fechar ou sair desta página.</p>
+            </div>
+        </section>
+
+        <!-- AÇÕES -->
+        <section class="acoes-finais">
+            <a href="{% url 'registro-denuncia' %}" class="btn-acao btn-primario">
+                Registrar outra denúncia
+            </a>
+
+            <a href="{% url 'index-denuncia' %}" class="btn-acao btn-secundario">
+                Voltar para página inicial
+            </a>
+        </section>
     </main>
+
+    <footer>
+        <div class="rodape"></div>
+    </footer>
+
+    <!-- VLIBRAS -->
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+    </script>
 
     <script>
         const botao = document.getElementById('copiar');
@@ -45,19 +86,17 @@
 
         botao.addEventListener('click', async function () {
             try {
-                await navigator.clipboard.writeText(
-                    codigo.textContent.trim()
-                );
-
+                await navigator.clipboard.writeText(codigo.textContent.trim());
                 botao.textContent = 'Copiado!';
-                mensagem.textContent = 'Protocolo copiado com sucesso.';
+                mensagem.textContent = 'Protocolo copiado com sucesso para a área de transferência.';
+                setTimeout(() => {
+                    botao.textContent = 'Copiar';
+                }, 3000);
             } catch (erro) {
                 mensagem.textContent =
-                    'Não foi possível copiar automaticamente. ' +
-                    'Selecione o protocolo e copie manualmente.';
+                    'Não foi possível copiar automaticamente. Selecione o código e copie manualmente.';
             }
         });
     </script>
 </body>
 </html>
-<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
