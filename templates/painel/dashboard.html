@@ -1,77 +1,126 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel de Denúncias</title>
+    <link rel="stylesheet" href="{% static 'painel/css/style.css' %}">
+    <title>Painel de Denúncias | Vigia Fácil</title>
 </head>
 
 <body>
+    <header>
+        <div class="container cabecalho-conteudo">
+            <a href="{% url 'dashboard-painel' %}" class="brasao">
+                <img src="{% static 'denuncia/images/brasao-prefeitura.png' %}" alt="Brasão da Prefeitura">
+            </a>
 
-    <main class="container">
+            <h1 class="titulo">VIGIA FÁCIL</h1>
 
-        <header>
-            <h1>Painel de Denúncias</h1>
+            <div class="acoes">
+                <span class="identificacao">Painel do Vigilante</span>
 
-            <form action="{% url 'logout-usuario' %}" method="post">
-                {% csrf_token %}
-                <button type="submit">Sair</button>
+                <form action="{% url 'logout-usuario' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-sair">Sair</button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <main class="container painel">
+        <section class="painel-introducao">
+            <h2>Painel de Denúncias</h2>
+            <p>Consulte e gerencie as denúncias registradas no sistema.</p>
+        </section>
+
+        <section class="filtros-bloco">
+            <form method="GET" class="filtros">
+                <div class="filtro-grupo">
+                    <label for="categoria">Categoria</label>
+                    <select name="categoria" id="categoria">
+                        <option value="">Todas as categorias</option>
+                        {% for valor, nome in categorias %}
+                            <option value="{{ valor }}" {% if categoria_selecionada == valor %}selected{% endif %}>
+                                {{ nome }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="filtro-grupo">
+                    <label for="ordem">Ordenar por</label>
+                    <select name="ordem" id="ordem">
+                        <option value="recentes" {% if ordem_selecionada == 'recentes' %}selected{% endif %}>
+                            Mais recentes
+                        </option>
+                        <option value="antigos" {% if ordem_selecionada == 'antigos' %}selected{% endif %}>
+                            Mais antigos
+                        </option>
+                    </select>
+                </div>
+
+                <div class="filtro-acoes">
+                    <button type="submit" class="btn-filtrar">Filtrar</button>
+                    <a href="{% url 'dashboard-painel' %}" class="btn-limpar">Limpar filtros</a>
+                </div>
             </form>
-        </header>
+        </section>
 
-        <h2>Denúncias registradas</h2>
+        <section class="denuncias">
+            <div class="denuncias-cabecalho">
+                <h2>Denúncias registradas</h2>
+                <span class="total-denuncias">{{ denuncias|length }} denúncia(s)</span>
+            </div>
 
-        {% if denuncias %}
-
-            <table border="1" cellpadding="8">
-                <thead>
-                    <tr>
-                        <th>Protocolo</th>
-                        <th>Categoria</th>
-                        <th>Problema específico</th>
-                        <th>Bairro</th>
-                        <th>Data de registro</th>
-                        <th>Status</th>
-                        <th>Ação</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {% for denuncia in denuncias %}
-                        <tr>
-                            <td>{{ denuncia.protocolo }}</td>
-
-                            <td>{{ denuncia.get_tipo_display }}</td>
-
-                            <td>{{ denuncia.get_problema_display }}</td>
-
-                            <td>{{ denuncia.bairro }}</td>
-
-                            <td>
-                                {{ denuncia.data_criacao|date:"d/m/Y H:i" }}
-                            </td>
-
-                            <td>
-                                {{ denuncia.get_status_display }}
-                            </td>
-
-                            <td>
-                                <a href="{% url 'detalha-painel' denuncia.id %}">
-                                    Ver detalhes
-                                </a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-
-        {% else %}
-
-            <p>Nenhuma denúncia cadastrada.</p>
-
-        {% endif %}
-
+            {% if denuncias %}
+                <div class="tabela-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Protocolo</th>
+                                <th>Categoria</th>
+                                <th>Problema específico</th>
+                                <th>Bairro</th>
+                                <th>Data de registro</th>
+                                <th>Status</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for denuncia in denuncias %}
+                                <tr>
+                                    <td class="protocolo">{{ denuncia.protocolo }}</td>
+                                    <td>{{ denuncia.get_tipo_display }}</td>
+                                    <td>{{ denuncia.get_problema_display }}</td>
+                                    <td>{{ denuncia.bairro }}</td>
+                                    <td>{{ denuncia.data_criacao|date:"d/m/Y H:i" }}</td>
+                                    <td>
+                                        <span class="status status-{{ denuncia.status }}">
+                                            {{ denuncia.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'detalha-painel' denuncia.id %}" class="btn-detalhes">
+                                            Ver detalhes
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="sem-denuncias">
+                    <h3>Nenhuma denúncia cadastrada</h3>
+                    <p>Quando novas denúncias forem registradas, elas aparecerão aqui.</p>
+                </div>
+            {% endif %}
+        </section>
     </main>
 
+    <footer>
+        <div class="rodape"></div>
+    </footer>
 </body>
 </html>
