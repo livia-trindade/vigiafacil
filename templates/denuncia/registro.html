@@ -1,84 +1,241 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Nova Denúncia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Denúncia | Vigia Fácil</title>
 </head>
+
 <body>
-    <h1>Registrar Denúncia</h1>
 
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
+    <header>
+        <div class="container cabecalho-conteudo">
+            <a href="{% url 'index-denuncia' %}" class="brasao">
+                <img src="{% static 'denuncia/images/brasao-prefeitura.png' %}" alt="Brasão da Prefeitura">
+            </a>
 
-        {{ form.as_p }}
+            <h1 class="titulo">VIGIA FÁCIL</h1>
 
-        <button type="submit">Enviar denúncia</button>
-    </form>
+            <div class="acoes-cabecalho">
+                <a href="{% url 'acompanhar-denuncia' %}" class="link-acompanhar">
+                    Acompanhar denúncia
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container pagina-registro">
+        <section class="topo-secao">
+            <h2>Registrar Denúncia</h2>
+            <p>Preencha os campos abaixo com as informações da ocorrência.</p>
+        </section>
+
+        <section class="card-bloco formulario-card">
+            <form method="POST" enctype="multipart/form-data" class="form-denuncia" id="form-denuncia">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="alerta-erro">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                <!-- DADOS DA OCORRÊNCIA -->
+                <div class="secao-formulario">
+                    <h3>1. Detalhes da Ocorrência</h3>
+
+                    <div class="campo-grupo">
+                        <label for="{{ form.tipo.id_for_label }}">Categoria:</label>
+                        {{ form.tipo }}
+                        {{ form.tipo.errors }}
+                    </div>
+
+                    <div class="campo-grupo">
+                        <label for="{{ form.problema.id_for_label }}">Problema específico:</label>
+                        {{ form.problema }}
+                        {{ form.problema.errors }}
+                    </div>
+
+                    <div class="campo-grupo">
+                        <label for="{{ form.descricao.id_for_label }}">Descrição do fato:</label>
+                        {{ form.descricao }}
+                        {{ form.descricao.errors }}
+                    </div>
+                </div>
+
+                <div class="secao-formulario">
+                    <h3>2. Localização e Data</h3>
+
+                    <div class="linha-dupla">
+                        <div class="campo-grupo">
+                            <label for="{{ form.bairro.id_for_label }}">Bairro:</label>
+                            {{ form.bairro }}
+                            {{ form.bairro.errors }}
+                        </div>
+
+                        <div class="campo-grupo">
+                            <label for="{{ form.data_ocorrencia.id_for_label }}">Data da ocorrência:</label>
+                            {{ form.data_ocorrencia }}
+                            {{ form.data_ocorrencia.errors }}
+                        </div>
+                    </div>
+
+                    <div class="campo-grupo">
+                        <label for="{{ form.endereco.id_for_label }}">Endereço:</label>
+                        {{ form.endereco }}
+                        {{ form.endereco.errors }}
+                    </div>
+
+                    <div class="campo-grupo">
+                        <label for="{{ form.ponto_referencia.id_for_label }}">Ponto de referência:</label>
+                        {{ form.ponto_referencia }}
+                        {{ form.ponto_referencia.errors }}
+                    </div>
+
+                    <div class="campo-grupo">
+                        <label for="{{ form.foto.id_for_label }}">Fotografia (opcional):</label>
+                        {{ form.foto }}
+                        {{ form.foto.errors }}
+                    </div>
+                </div>
+
+                <div class="secao-formulario">
+                    <h3>3. Identificação</h3>
+
+                    <div class="campo-checkbox">
+                        {{ form.anonima }}
+                        <label for="{{ form.anonima.id_for_label }}">Desejo fazer uma denúncia anônima</label>
+                    </div>
+
+                    <div id="container-identificacao" class="linha-dupla">
+                        <div class="campo-grupo">
+                            <label for="{{ form.nome_denunciante.id_for_label }}">Nome completo:</label>
+                            {{ form.nome_denunciante }}
+                            {{ form.nome_denunciante.errors }}
+                        </div>
+
+                        <div class="campo-grupo">
+                            <label for="{{ form.telefone_denunciante.id_for_label }}">Telefone:</label>
+                            {{ form.telefone_denunciante }}
+                            {{ form.telefone_denunciante.errors }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="acoes-formulario">
+                    <button type="submit" class="btn-enviar">Enviar denúncia</button>
+                    <a href="{% url 'index-denuncia' %}" class="btn-cancelar">Cancelar</a>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <div class="rodape"></div>
+    </footer>
+
+
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
     <script>
-document.addEventListener('DOMContentLoaded', function () {
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+    </script>
 
-    const categoria = document.getElementById('id_tipo');
-    const problema = document.getElementById('id_problema');
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const categoria = document.getElementById('id_tipo');
+        const problema = document.getElementById('id_problema');
 
-    const problemasPorCategoria = {
-        'mosquitos_insetos': [
-            ['dengue', 'Dengue'],
-            ['barbeiro', 'Barbeiro'],
-            ['carrapatos', 'Carrapatos'],
-            ['outros_insetos', 'Outros problemas relacionados a mosquitos e insetos']
-        ],
+        const problemasPorCategoria = {
+            'mosquitos_insetos': [
+                ['dengue', 'Dengue'],
+                ['barbeiro', 'Barbeiro'],
+                ['carrapatos', 'Carrapatos'],
+                ['outros_insetos', 'Outros problemas relacionados a mosquitos e insetos']
+            ],
+            'animais': [
+                ['animal_peconhento', 'Animal peçonhento'],
+                ['animal_silvestre', 'Animal silvestre'],
+                ['suspeita_raiva', 'Suspeita de raiva'],
+                ['maus_tratos_abandono', 'Maus-tratos ou abandono']
+            ],
+            'alimentacao_mercado': [
+                ['comida_estragada', 'Comida estragada'],
+                ['sujeira', 'Sujeira'],
+                ['suspeita_contaminacao', 'Suspeita de contaminação']
+            ],
+            'agua_esgoto': [
+                ['agua_suja_cheiro', 'Água suja ou com cheiro'],
+                ['esgoto_ceu_aberto', 'Esgoto a céu aberto'],
+                ['poco_contaminado', 'Poço contaminado']
+            ],
+            'empresas_trabalho': [
+                ['falta_epi', 'Falta de EPI'],
+                ['poeira_fumaca', 'Poeira ou fumaça excessiva'],
+                ['condicoes_insalubres', 'Condições insalubres']
+            ],
+            'outro': [
+                ['outro_problema', 'Outro problema']
+            ]
+        };
 
-        'animais': [
-            ['animal_peconhento', 'Animal peçonhento'],
-            ['animal_silvestre', 'Animal silvestre'],
-            ['suspeita_raiva', 'Suspeita de raiva'],
-            ['maus_tratos_abandono', 'Maus-tratos ou abandono']
-        ],
+        function atualizarProblemas() {
+            if (!categoria || !problema) return;
+            const valorAtual = problema.value;
+            const categoriaSelecionada = categoria.value;
+            const problemas = problemasPorCategoria[categoriaSelecionada] || [];
 
-        'alimentacao_mercado': [
-            ['comida_estragada', 'Comida estragada'],
-            ['sujeira', 'Sujeira'],
-            ['suspeita_contaminacao', 'Suspeita de contaminação']
-        ],
+            problema.innerHTML = '<option value="">Selecione um problema</option>';
 
-        'agua_esgoto': [
-            ['agua_suja_cheiro', 'Água suja ou com cheiro'],
-            ['esgoto_ceu_aberto', 'Esgoto a céu aberto'],
-            ['poco_contaminado', 'Poço contaminado']
-        ],
+            problemas.forEach(function (item) {
+                const option = document.createElement('option');
+                option.value = item[0];
+                option.textContent = item[1];
+                if (item[0] === valorAtual) {
+                    option.selected = true;
+                }
+                problema.appendChild(option);
+            });
+        }
 
-        'empresas_trabalho': [
-            ['falta_epi', 'Falta de EPI'],
-            ['poeira_fumaca', 'Poeira ou fumaça excessiva'],
-            ['condicoes_insalubres', 'Condições insalubres']
-        ],
+        if (categoria) {
+            categoria.addEventListener('change', atualizarProblemas);
+            atualizarProblemas();
+        }
 
-        'outro': [
-            ['outro_problema', 'Outro problema']
-        ]
-    };
+        const checkboxAnonima = document.getElementById('id_anonima');
+        const containerIdentificacao = document.getElementById('container-identificacao');
+        const inputNome = document.getElementById('id_nome_denunciante');
+        const inputTelefone = document.getElementById('id_telefone_denunciante');
 
-    function atualizarProblemas() {
-        const categoriaSelecionada = categoria.value;
-        const problemas = problemasPorCategoria[categoriaSelecionada] || [];
+        function toggleIdentificacao() {
+            if (!checkboxAnonima || !containerIdentificacao) return;
+            if (checkboxAnonima.checked) {
+                containerIdentificacao.style.display = 'none';
+                if (inputNome) {
+                    inputNome.value = '';
+                    inputNome.removeAttribute('required');
+                }
+                if (inputTelefone) {
+                    inputTelefone.value = '';
+                    inputTelefone.removeAttribute('required');
+                }
+            } else {
+                containerIdentificacao.style.display = 'grid';
+            }
+        }
 
-        problema.innerHTML = '<option value="">Selecione um problema</option>';
-
-        problemas.forEach(function (item) {
-            const option = document.createElement('option');
-            option.value = item[0];
-            option.textContent = item[1];
-
-            problema.appendChild(option);
-        });
-    }
-
-    categoria.addEventListener('change', atualizarProblemas);
-
-    atualizarProblemas();
-});
-</script>
+        if (checkboxAnonima) {
+            checkboxAnonima.addEventListener('change', toggleIdentificacao);
+            toggleIdentificacao();
+        }
+    });
+    </script>
 </body>
 </html>
-
-<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
