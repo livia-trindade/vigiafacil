@@ -1,0 +1,284 @@
+body {
+    margin: 0;
+    color: #000000;
+    background-color: #ffffff;
+}
+
+a {
+    text-decoration: none;
+}
+
+button,
+select {
+    font-family: inherit;
+}
+
+.container {
+    margin: 0 auto;
+    padding-left: 5rem;
+    padding-right: 5rem;
+}
+
+/* CABEÇALHO */
+
+header {
+    border-bottom: 1px solid #000000;
+    background-color: #ffffff;
+}
+
+.cabecalho-conteudo {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+header img {
+    width: auto;
+    height: 6rem;
+}
+
+.titulo {
+    margin: 0;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.acoes-cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.identificacao {
+    color: #000000;
+    font-size: 1rem;
+}
+
+.btn-sair {
+    color: #ffffff;
+    background: #000000;
+    font-size: 1rem;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+.btn-sair:hover,
+.btn-salvar:hover {
+    background-color: #333333;
+}
+
+/* CONTEÚDO PRINCIPAL */
+
+.pagina-atualizar {
+    padding-top: 3rem;
+    padding-bottom: 4rem;
+}
+
+.topo-secao {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #000000;
+    padding-bottom: 1.5rem;
+}
+
+.topo-secao h2 {
+    margin: 0 0 0.5rem;
+    font-size: 2.2rem;
+}
+
+.topo-secao p {
+    margin: 0;
+    font-size: 1rem;
+}
+
+/* CARTÃO DE RESUMO */
+
+.info-card {
+    background-color: #D9D9D9;
+    border-radius: 5px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-size: 1rem;
+}
+
+.info-item strong {
+    font-size: 0.95rem;
+}
+
+.protocolo-destaque {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.badge-status {
+    display: inline-block;
+    align-self: flex-start;
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    padding: 0.3rem 0.75rem;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+/* FORMULÁRIO */
+
+.formulario-card {
+    background-color: #D9D9D9;
+    border-radius: 5px;
+    padding: 2rem;
+}
+
+.campo-grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.campo-grupo label {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.campo-grupo select {
+    width: 100%;
+    max-width: 400px;
+    padding: 0.65rem 0.75rem;
+    font-size: 1rem;
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.campo-grupo select:focus {
+    outline: 2px solid #000000;
+}
+
+/* AÇÕES DO FORMULÁRIO */
+
+.acoes-formulario {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+.btn-salvar {
+    color: #ffffff;
+    background-color: #000000;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    padding: 0.6rem 1.25rem;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.btn-cancelar {
+    color: #000000;
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    padding: 0.6rem 1.25rem;
+    font-size: 1rem;
+    display: inline-block;
+}
+
+.btn-cancelar:hover {
+    background-color: #f0f0f0;
+}
+
+/* MENSAGENS DE ERRO */
+
+.alerta-erro {
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+
+.alerta-erro ul {
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+/* RODAPÉ */
+
+.rodape {
+    background-color: #D9D9D9;
+    margin-top: 4rem;
+    height: 100px;
+}
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 900px) {
+    .container {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    .cabecalho-conteudo {
+        grid-template-columns: auto 1fr;
+        gap: 1rem;
+    }
+
+    .titulo {
+        text-align: left;
+    }
+
+    .acoes-cabecalho {
+        grid-column: 1 / -1;
+        justify-content: space-between;
+    }
+}
+
+@media (max-width: 650px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    header img {
+        height: 4rem;
+    }
+
+    .titulo {
+        font-size: 1.5rem;
+    }
+
+    .campo-grupo select {
+        max-width: 100%;
+    }
+
+    .acoes-formulario {
+        flex-direction: column;
+    }
+
+    .btn-salvar,
+    .btn-cancelar {
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+    }
+}

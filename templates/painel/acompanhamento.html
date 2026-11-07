@@ -1,69 +1,104 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar Acompanhamento</title>
+    <link rel="stylesheet" href="{% static 'painel/css/acompanhamento.css' %}">
+    <title>Registrar Acompanhamento | Vigia Fácil</title>
 </head>
 
 <body>
-    <main class="container">
-        <h1>Registrar Acompanhamento</h1>
+    <header>
+        <div class="container cabecalho-conteudo">
+            <a href="{% url 'dashboard-painel' %}" class="brasao">
+                <img src="{% static 'denuncia/images/brasao-prefeitura.png' %}" alt="Brasão da Prefeitura">
+            </a>
 
-        <div class="info">
-            <h2>Dados da denúncia</h2>
+            <h1 class="titulo">VIGIA FÁCIL</h1>
 
-            <p>
-                <strong>Protocolo:</strong>
-                {{ denuncia.protocolo }}
-            </p>
+            <div class="acoes-cabecalho">
+                <span class="identificacao">Painel do Vigilante</span>
 
-            <p>
-                <strong>Tipo:</strong>
-                {{ denuncia.get_tipo_display }}
-            </p>
-
-            <p>
-                <strong>Bairro:</strong>
-                {{ denuncia.bairro }}
-            </p>
-
-            <p>
-                <strong>Status atual:</strong>
-                {{ denuncia.get_status_display }}
-            </p>
-        </div>
-
-        <form method="POST">
-            {% csrf_token %}
-
-            {{ form.non_field_errors }}
-
-            <label for="{{ form.descricao.id_for_label }}">
-                Descrição das providências
-            </label>
-
-            {{ form.descricao }}
-
-            {% if form.descricao.errors %}
-                <div class="erro">
-                    {{ form.descricao.errors }}
-                </div>
-            {% endif %}
-
-            <div class="acoes">
-                <button type="submit">
-                    Registrar acompanhamento
-                </button>
-
-                <a
-                    class="voltar"
-                    href="{% url 'detalha-painel' denuncia.id %}"
-                >
-                    Cancelar
-                </a>
+                <form action="{% url 'logout-usuario' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-sair">Sair</button>
+                </form>
             </div>
-        </form>
+        </div>
+    </header>
+
+    <main class="container pagina-acompanhamento">
+        <section class="topo-secao">
+            <h2>Registrar Acompanhamento</h2>
+            <p>Descreva as ações, vistorias e providências tomadas para esta denúncia.</p>
+        </section>
+
+        <section class="card-bloco info-card">
+            <h3>Dados da denúncia</h3>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <strong>Protocolo:</strong>
+                    <span class="protocolo-destaque">{{ denuncia.protocolo }}</span>
+                </div>
+
+                <div class="info-item">
+                    <strong>Tipo:</strong>
+                    <span>{{ denuncia.get_tipo_display }}</span>
+                </div>
+
+                <div class="info-item">
+                    <strong>Bairro:</strong>
+                    <span>{{ denuncia.bairro }}</span>
+                </div>
+
+                <div class="info-item">
+                    <strong>Status atual:</strong>
+                    <span class="badge-status">{{ denuncia.get_status_display }}</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="card-bloco formulario-card">
+            <form method="POST">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="alerta-erro">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                <div class="campo-grupo">
+                    <label for="{{ form.descricao.id_for_label }}">
+                        Descrição das providências:
+                    </label>
+
+                    {{ form.descricao }}
+
+                    {% if form.descricao.errors %}
+                        <div class="alerta-erro">
+                            {{ form.descricao.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="acoes-formulario">
+                    <button type="submit" class="btn-salvar">
+                        Registrar acompanhamento
+                    </button>
+
+                    <a class="btn-cancelar" href="{% url 'detalha-painel' denuncia.id %}">
+                        Cancelar
+                    </a>
+                </div>
+            </form>
+        </section>
     </main>
+
+    <footer>
+        <div class="rodape"></div>
+    </footer>
 </body>
 </html>
