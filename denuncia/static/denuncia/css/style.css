@@ -1,15 +1,31 @@
+html {
+    font-size: 112.5%;
+}
+
 body {
     margin: 0;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400; 
+    font-size: 1rem;  
+    line-height: 1.65;
+    color: #000000;
+}
+
+h1, h2, h3 {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.2;
 }
 
 a {
     text-decoration: none;
+    color: inherit;
 }
 
 .container {
+    max-width: 1200px;
     margin: 0 auto;
-    padding-left: 5rem;
-    padding-right: 5rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
 }
 
 header {
@@ -25,13 +41,16 @@ header {
 }
 
 header img {
+    display: block;
     width: auto;
-    height: 6rem;
+    height: 5rem;
 }
 
 .titulo {
     margin: 0;
-    font-size: 2rem;
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
     text-align: center;
 }
 
@@ -39,71 +58,125 @@ header img {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 1rem;
+    gap: 1.5rem;
 }
 
 .link-acompanhar {
     color: #000000;
-    font-size: 1rem;
+    font-size:  1rem;
+    font-weight: 500;
 }
 
 .btn-denunciar {
+    display: inline-block;
     color: #fff;
     background: #000000;
     font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
     border: 1px solid #000000;
     border-radius: 5px;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 1.5rem;
+}
+
+.btn-denunciar:hover {
+    background-color: #333333;
 }
 
 .apresentacao {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+    gap: 3rem;
     align-items: center;
-    padding-top: 4rem;
-    padding-bottom: 4rem;
+    padding-top: 4.5rem;
+    padding-bottom: 4.5rem;
 }
 
 .apresentacao-texto h2 {
     margin: 0 0 1rem;
     font-size: 2.5rem;
+    font-weight: 700; 
+    line-height: 1.1;
+}
+
+.apresentacao-texto p {
+    margin: 0;
+    max-width: 30rem;
+    font-size: 1.1875rem;
+    font-weight: 400;
+    line-height: 1.6;
 }
 
 .apresentacao-btns {
     display: flex;
-    gap: 1rem;
-    margin-top: 1.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
 }
 
 .apresentacao-btns .btn-primario {
+    display: inline-block;
     color: #fff;
     background: #000000;
     font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.4;
     border: 1px solid #000000;
     border-radius: 5px;
-    padding: 0.5rem 1rem;
+    padding: 0.75rem 1.75rem;
+}
+
+.apresentacao-btns .btn-primario:hover {
+    background-color: #333333;
 }
 
 .apresentacao-btns .link-secundario {
     color: #000000;
     font-size: 1rem;
-    align-content: center;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
 }
 
 .apresentacao-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
     background: #D9D9D9;
-    padding: 1.5rem;
+    padding: 2rem;
     border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+.apresentacao-info-item {
+    margin: 0;
+}
+
+.apresentacao-info-item strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.0625rem;
+    font-weight: 700;
 }
 
 .informacoes {
-    padding-bottom: 4rem;
+    padding-bottom: 4.5rem;
+}
+
+.informacoes-titulo h2,
+.funcionamento-titulo h2 {
+    margin: 0 0 1.5rem;
+    font-size: 1.75rem;
+    font-weight: 700;
 }
 
 .informacoes-lista {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
     gap: 2rem;
 }
 
@@ -112,10 +185,39 @@ header img {
     border-radius: 5px;
     padding: 1.5rem;
     min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 0.75rem;
+    text-align: left;
+}
+
+.informacoes-icone {
+    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
+    object-fit: contain;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 2px;
+    object-fit: contain;
+    background-color: #fff;
+}
+
+.informacoes-item h3 {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+ 
+.informacoes-item p {
+    margin: 0;
+    font-size: 1rem;
 }
 
 .funcionamento {
-    padding-bottom: 4rem;
+    padding-bottom: 4.5rem;
 }
 
 .funcionamento-lista {
@@ -129,17 +231,79 @@ header img {
     border-radius: 5px;
     padding: 1.5rem;
     min-height: 200px;
+    font-weight: 400;
+}
+
+.funcionamento-item p {
+    margin: 1rem 0 0;
+    font-size: 1.0625rem;
+    font-weight: 500;
+    line-height: 1.45;
 }
 
 .passo-numero {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 2rem;
-    height: 2rem;
+    width: 2.25rem;
+    height: 2.25rem;
     background-color: #fff;
     border-radius: 50%;
+    font-family: 'Roboto', sans-serif;
     font-size: 1rem;
+    font-weight: 700;
+}
+
+.aviso-urgencia {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0.875rem 2rem;
+    background-color: #D9D9D9;
+    border-bottom: 1px solid #a8a8a8;
+    font-size: 0.9375rem;
+    line-height: 1.4;
+}
+
+.aviso-urgencia p {
+    margin: 0;
+}
+
+.aviso-icone {
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    color: #8a6100;
+}
+
+.cabecalho-esquerda {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.acoes {
+    white-space: nowrap;
+}
+
+.ajuste-fonte button {
+    min-width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #000000;
+    background: #fff;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.ajuste-fonte {
+    display: flex;
+    gap: 0.25rem;
 }
 
 .rodape {
@@ -147,4 +311,3 @@ header img {
     margin-top: 2rem;
     height: 100px;
 }
-

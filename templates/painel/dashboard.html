@@ -5,18 +5,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'painel/css/style.css' %}">
+
     <title>Painel de Denúncias | Vigia Fácil</title>
 </head>
 
 <body>
     <header>
         <div class="container cabecalho-conteudo">
-            <a href="{% url 'dashboard-painel' %}" class="brasao">
-                <img src="{% static 'denuncia/images/brasao-prefeitura.png' %}" alt="Brasão da Prefeitura">
-            </a>
+            <div class="cabecalho-esquerda">
+                <a href="{% url 'index-denuncia' %}" class="brasao">
+                    <img src="{% static 'denuncia/images/brasao-prefeitura.png' %}" alt="VigiaFácil - Página inicial">
+                </a>
 
-            <h1 class="titulo">VIGIA FÁCIL</h1>
-
+                <div class="ajuste-fonte" role="group" aria-label="Tamanho da fonte">
+                    <button type="button" id="fonte-diminuir" aria-label="Diminuir fonte">A-</button>
+                    <button type="button" id="fonte-padrao" aria-label="Fonte padrão">A</button>
+                    <button type="button" id="fonte-aumentar" aria-label="Aumentar fonte">A+</button>
+                </div>
+            </div>
+        
+            <a href="{% url 'index-denuncia' %}"><h1  class="titulo">VIGIA FÁCIL</h1></a>
+            
             <div class="acoes">
                 <span class="identificacao">Painel do Vigilante</span>
 
@@ -42,6 +51,18 @@
                         <option value="">Todas as categorias</option>
                         {% for valor, nome in categorias %}
                             <option value="{{ valor }}" {% if categoria_selecionada == valor %}selected{% endif %}>
+                                {{ nome }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="filtro-grupo">
+                    <label for="status">Status</label>
+                    <select name="status" id="status">
+                        <option value="">Todos os status</option>
+                        {% for valor, nome in status_opcoes %}
+                            <option value="{{ valor }}" {% if status_selecionado == valor %}selected{% endif %}>
                                 {{ nome }}
                             </option>
                         {% endfor %}
@@ -122,5 +143,8 @@
     <footer>
         <div class="rodape"></div>
     </footer>
+
+    <script src="{% static 'denuncia/js/fonte.js' %}"></script>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
 </body>
 </html>

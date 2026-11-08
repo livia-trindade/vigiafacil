@@ -1,7 +1,16 @@
 body {
     margin: 0;
     color: #000000;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400; 
+    font-size: 1rem;  
+    line-height: 1.65;
     background-color: #ffffff;
+}
+
+h1, h2, h3 {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.2;
 }
 
 a {
@@ -13,9 +22,10 @@ button {
 }
 
 .container {
+    max-width: 1200px;
     margin: 0 auto;
-    padding-left: 5rem;
-    padding-right: 5rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
 }
 
 /* CABEÇALHO */
@@ -54,7 +64,7 @@ header img {
 .link-acompanhar {
     color: #000000;
     font-size: 1rem;
-    font-weight: bold;
+    font-weight: 500;
 }
 
 .link-acompanhar:hover {
@@ -66,7 +76,6 @@ header img {
 .pagina-sucesso {
     padding-top: 3rem;
     padding-bottom: 4rem;
-    max-width: 800px;
 }
 
 .topo-secao {
@@ -175,6 +184,168 @@ header img {
     line-height: 1.4;
 }
 
+/* CADASTRO DE SENHA */
+
+.senha-card:focus-within {
+    box-shadow: 0 0 0 2px #2f8de4;
+}
+ 
+.senha-card h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.4rem;
+}
+ 
+.senha-card .instrucao {
+    margin: 0 0 0.5rem;
+}
+ 
+.form-senha {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-top: 1.25rem;
+}
+ 
+.campo-senha {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+ 
+.campo-senha label {
+    font-size: 0.95rem;
+    font-weight: bold;
+}
+ 
+.obrigatorio {
+    color: #d00000;
+}
+ 
+.campo-senha input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.75rem 1rem;
+    font-family: inherit;
+    font-size: 1rem;
+    color: #000000;
+    background-color: #ffffff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+ 
+.campo-senha input:focus-visible {
+    outline: 2px solid #000000;
+    outline-offset: 1px;
+}
+
+.senha-wrap {
+    position: relative;
+}
+
+.senha-wrap input {
+    padding-right: 3rem;
+}
+
+.btn-olho {
+    position: absolute;
+    top: 50%;
+    right: 0.5rem;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    color: #000000;
+    background: none;
+    border: 0;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-olho:hover {
+    background-color: #eeeeee;
+}
+
+.btn-olho:focus-visible {
+    outline: 2px solid #000000;
+    outline-offset: 1px;
+}
+
+.btn-olho .risco {
+    display: none;
+}
+
+.btn-olho.ativo .risco {
+    display: inline;
+}
+ 
+.requisitos-senha {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.75rem;
+    line-height: 1.6;
+}
+ 
+.requisitos-senha li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+ 
+.requisitos-senha li::before {
+    content: "";
+    flex-shrink: 0;
+    width: 0.6rem;
+    height: 0.6rem;
+    border: 1px solid #000000;
+    border-radius: 50%;
+}
+ 
+.requisitos-senha li.atendido::before {
+    background-color: #1a7f37;
+    border-color: #1a7f37;
+}
+ 
+.campo-senha .errorlist {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.875rem;
+    font-weight: bold;
+    color: #b00020;
+}
+ 
+.aviso-senha {
+    margin: 0;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    background-color: #cce4ff;
+    border-radius: 4px;
+}
+ 
+.btn-salvar-senha {
+    align-self: flex-start;
+    padding: 0.75rem 1.5rem;
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #ffffff;
+    background-color: #3a3a3a;
+    border: 1px solid #3a3a3a;
+    border-radius: 3px;
+    cursor: pointer;
+}
+ 
+.btn-salvar-senha:hover {
+    background-color: #000000;
+}
+
 /* BOTÕES DE AÇÃO INFERIORES */
 
 .acoes-finais {
@@ -215,6 +386,39 @@ header img {
     background-color: #D9D9D9;
     margin-top: 4rem;
     height: 100px;
+}
+
+.cabecalho-esquerda {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.acoes {
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1.5rem;
+}
+
+.ajuste-fonte button {
+    min-width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #000000;
+    background: #fff;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.ajuste-fonte {
+    display: flex;
+    gap: 0.25rem;
 }
 
 /* RESPONSIVIDADE */

@@ -5,6 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'denuncia/css/acompanhar.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
     <title>Acompanhar Denúncia | Vigia Fácil</title>
 </head>
 
@@ -12,17 +17,25 @@
     <!-- CABEÇALHO PADRÃO DO CIDADÃO -->
     <header>
         <div class="container cabecalho-conteudo">
-            <a href="{% url 'index-denuncia' %}" class="brasao">
-                <img src="{% static 'denuncia/images/brasao-prefeitura.png' %}" alt="Brasão da Prefeitura">
-            </a>
-
-            <h1 class="titulo">VIGIA FÁCIL</h1>
-
-            <div class="acoes-cabecalho">
-                <a href="{% url 'registro-denuncia' %}" class="btn-denunciar">
-                    Fazer Denúncia
+            <div class="cabecalho-esquerda">
+                <a href="{% url 'index-denuncia' %}" class="brasao">
+                    <img src="{% static 'denuncia/images/brasao-prefeitura.png' %}" alt="VigiaFácil - Página inicial">
                 </a>
+
+                <div class="ajuste-fonte" role="group" aria-label="Tamanho da fonte">
+                    <button type="button" id="fonte-diminuir" aria-label="Diminuir fonte">A-</button>
+                    <button type="button" id="fonte-padrao" aria-label="Fonte padrão">A</button>
+                    <button type="button" id="fonte-aumentar" aria-label="Aumentar fonte">A+</button>
+                </div>
             </div>
+        
+            <a href="{% url 'index-denuncia' %}"><h1  class="titulo">VIGIA FÁCIL</h1></a>
+            
+            <nav class="acoes">
+                <a href="{% url 'index-denuncia' %}" class="link-acompanhar">Voltar para página incial</a>
+            
+                <a href="{% url 'registro-denuncia' %}" class="btn-denunciar">Denunciar</a>
+            </nav>
         </div>
     </header>
 
@@ -45,12 +58,23 @@
                         id="protocolo"
                         maxlength="10"
                         required
-                        placeholder="Ex: ABC1234567"
+                        placeholder="Ex.: ABC1234567"
                         autocomplete="off"
                     >
-                </div>
 
-                <button type="submit" class="btn-consultar">Consultar</button>
+                    <label for="senha">Senha:</label>
+                    <input
+                        type="password"
+                        name="senha"
+                        id="senha"
+                        required
+                        placeholder="Digite sua senha"
+                        autocomplete="current-password"
+                    >
+                    
+                    <button type="submit" class="btn-consultar">Consultar</button>
+                </div>
+                
             </form>
         </section>
 
@@ -96,7 +120,6 @@
                 </div>
             </section>
         {% endif %}
-
     </main>
 
     <footer>
@@ -109,6 +132,7 @@
             <div class="vw-plugin-top-wrapper"></div>
         </div>
     </div>
+    <script src="{% static 'denuncia/js/fonte.js' %}"></script>
     <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
     <script>
         new window.VLibras.Widget('https://vlibras.gov.br/app');

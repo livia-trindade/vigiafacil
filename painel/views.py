@@ -10,12 +10,16 @@ from .forms import StatusDenunciaForm, AcompanhamentoForm
 @permission_required('denuncia.view_denuncia', raise_exception=True)
 def dashboard(request):
     denuncias = Denuncia.objects.all()
-    
+
     categoria = request.GET.get('categoria', '')
+    status_selecionado = request.GET.get('status', '')
+    ordem = request.GET.get('ordem', 'recentes')
 
     if categoria:
         denuncias = denuncias.filter(tipo=categoria)
-    ordem = request.GET.get('ordem', 'recentes')
+
+    if status_selecionado in dict(Denuncia.STATUS_DENUNCIA):
+        denuncias = denuncias.filter(status=status_selecionado)
 
     if ordem == 'antigos':
         denuncias = denuncias.order_by('data_criacao')
@@ -26,8 +30,10 @@ def dashboard(request):
     return render(request, 'painel/dashboard.html', {
         'denuncias': denuncias,
         'categoria_selecionada': categoria,
+        'status_selecionado': status_selecionado,
         'ordem_selecionada': ordem,
         'categorias': Denuncia.TIPO_DENUNCIA,
+        'status_opcoes': Denuncia.STATUS_DENUNCIA,
     })
 
 

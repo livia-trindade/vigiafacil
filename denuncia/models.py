@@ -4,6 +4,7 @@ import string
 
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.contrib.auth.hashers import make_password, check_password
 
 
 PROBLEMAS_POR_CATEGORIA = {
@@ -131,6 +132,12 @@ class Denuncia(models.Model):
         verbose_name='Telefone do denunciante'
     )
 
+    senha_hash = models.CharField(
+        max_length=128,
+        blank=True,
+        verbose_name='Senha de acompanhamento'
+    )
+
     # Controle interno
     status = models.CharField(
         max_length=20,
@@ -192,6 +199,12 @@ class Denuncia(models.Model):
                     break
 
         super().save(*args, **kwargs)
+
+    def definir_senha(self, senha_pura):
+        self.senha_hash = make_password(senha_pura)
+
+    def conferir_senha(self, senha_pura):
+        return bool(self.senha_hash) and check_password(senha_pura, self.senha_hash)
 
     def __str__(self):
         return f'Denúncia {self.protocolo}'

@@ -5,6 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'denuncia/css/sucesso.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
     <title>Denúncia Registrada | Vigia Fácil</title>
 </head>
 
@@ -12,17 +17,31 @@
     <!-- CABEÇALHO PADRÃO -->
     <header>
         <div class="container cabecalho-conteudo">
-            <a href="{% url 'index-denuncia' %}" class="brasao">
-                <img src="{% static 'denuncia/images/brasao-prefeitura.png' %}" alt="Brasão da Prefeitura">
-            </a>
+            <div class="cabecalho-esquerda">
+                {% if senha_cadastrada %}
+                <a href="{% url 'index-denuncia' %}" class="brasao">
+                    <img src="{% static 'denuncia/images/brasao-prefeitura.png' %}" alt="VigiaFácil - Página inicial">
+                </a>
+                {% else %}
+                <span class="brasao">
+                    <img src="{% static 'denuncia/images/brasao-prefeitura.png' %}" alt="Brasão da Prefeitura">
+                </span>
+                {% endif %}
+
+                <div class="ajuste-fonte" role="group" aria-label="Tamanho da fonte">
+                    <button type="button" id="fonte-diminuir" aria-label="Diminuir fonte">A-</button>
+                    <button type="button" id="fonte-padrao" aria-label="Fonte padrão">A</button>
+                    <button type="button" id="fonte-aumentar" aria-label="Aumentar fonte">A+</button>
+                </div>
+            </div>
 
             <h1 class="titulo">VIGIA FÁCIL</h1>
 
-            <div class="acoes-cabecalho">
-                <a href="{% url 'acompanhar-denuncia' %}" class="link-acompanhar">
-                    Acompanhar denúncia
-                </a>
-            </div>
+            <nav class="acoes">
+                {% if senha_cadastrada %}
+                <a href="{% url 'acompanhar-denuncia' %}" class="link-acompanhar">Acompanhar denúncia</a>
+                {% endif %}
+            </nav>
         </div>
     </header>
 
@@ -51,22 +70,81 @@
             </div>
         </section>
 
+        {% if senha_cadastrada %}
+        <section class="card-bloco senha-card">
+            <h3>Senha cadastrada</h3>
+            <p class="instrucao">Tudo certo! Use o protocolo e a senha para acompanhar sua denúncia.</p>
+        </section>
+        {% else %}
+        <section class="card-bloco senha-card">
+            <h3>Crie uma senha de acompanhamento</h3>
+            <p class="instrucao">Para consultar o andamento, você usará o número do protocolo junto com esta senha.</p>
+            <p class="instrucao">Só você terá acesso.</p>
+
+            <form method="POST" class="form-senha" novalidate>
+                {% csrf_token %}
+
+                <div class="campo-senha">
+                    <label for="{{ form.senha.id_for_label }}">Senha <span class="obrigatorio">*</span></label>
+
+                    <div class="senha-wrap">
+                        {{ form.senha }}
+                        <button type="button" class="btn-olho" aria-label="Mostrar senha" aria-pressed="false">
+                            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/>
+                                <path class="risco" d="M3 3l18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <ul class="requisitos-senha" id="requisitos-senha">
+                        <li data-requisito="tamanho">Mínimo de 8 caracteres</li>
+                        <li data-requisito="letras-numeros">Contém letras e números</li>
+                    </ul>
+                    {{ form.senha.errors }}
+                </div>
+
+                <div class="campo-senha">
+                    <label for="{{ form.confirmar_senha.id_for_label }}">Confirme a senha <span class="obrigatorio">*</span></label>
+                    <div class="senha-wrap">
+                        {{ form.confirmar_senha }}
+                        <button type="button" class="btn-olho" aria-label="Mostrar senha" aria-pressed="false">
+                            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/>
+                                <path class="risco" d="M3 3l18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                    {{ form.confirmar_senha.errors }}
+                </div>
+
+                <p class="aviso-senha"><strong>Guarde sua senha em um local seguro.</strong> Se ela for perdida, não será possível recuperá-la</p>
+
+                <button type="submit" class="btn-salvar-senha">Salvar senha</button>
+            </form>
+        </section>
+        {% endif %}
+
         <!-- AÇÕES -->
+        {% if senha_cadastrada %}
         <section class="acoes-finais">
-            <a href="{% url 'registro-denuncia' %}" class="btn-acao btn-primario">
-                Registrar outra denúncia
+            <a href="{% url 'acompanhar-denuncia' %}" class="btn-acao btn-primario">
+                Acompanhar denúncia
             </a>
 
             <a href="{% url 'index-denuncia' %}" class="btn-acao btn-secundario">
                 Voltar para página inicial
             </a>
         </section>
+        {% endif %}
     </main>
 
     <footer>
         <div class="rodape"></div>
     </footer>
-
+    <script src="{% static 'denuncia/js/fonte.js' %}"></script>
     <!-- VLIBRAS -->
     <div vw class="enabled">
         <div vw-access-button class="active"></div>
@@ -98,5 +176,39 @@
             }
         });
     </script>
+
+    <script>
+        const campoSenha = document.getElementById('id_senha');
+        const requisitos = document.querySelectorAll('#requisitos-senha li');
+
+        if (campoSenha && requisitos.length) {
+            campoSenha.addEventListener('input', function () {
+                const valor = campoSenha.value;
+                const atendidos = {
+                    'tamanho': valor.length >= 8,
+                    'letras-numeros': /[A-Za-zÀ-ÿ]/.test(valor) && /\d/.test(valor)
+                };
+
+                requisitos.forEach(function (item) {
+                    item.classList.toggle('atendido', atendidos[item.dataset.requisito]);
+                });
+            });
+        }
+    </script>
+
+    <script>
+        document.querySelectorAll('.btn-olho').forEach(function (botao) {
+            botao.addEventListener('click', function () {
+                const campo = botao.parentElement.querySelector('input');
+                const mostrar = campo.type === 'password';
+
+                campo.type = mostrar ? 'text' : 'password';
+                botao.classList.toggle('ativo', mostrar);
+                botao.setAttribute('aria-pressed', mostrar);
+                botao.setAttribute('aria-label', mostrar ? 'Ocultar senha' : 'Mostrar senha');
+            });
+        });
+    </script>
 </body>
+
 </html>

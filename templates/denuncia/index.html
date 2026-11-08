@@ -5,17 +5,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'denuncia/css/style.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
     <title>Vigia Fácil</title>
 </head>
 
 <body>
     <header>
         <div class="container cabecalho-conteudo">
-            <a href="{% url 'index-denuncia' %}" class="brasao">
-            <img src="{% static 'denuncia/images/brasao-prefeitura.png' %}" alt="VigiaFácil - Página inicial">
-            </a>
+            <div class="cabecalho-esquerda">
+                <a href="{% url 'index-denuncia' %}" class="brasao">
+                    <img src="{% static 'denuncia/images/brasao-prefeitura.png' %}" alt="VigiaFácil - Página inicial">
+                </a>
+
+                <div class="ajuste-fonte" role="group" aria-label="Tamanho da fonte">
+                    <button type="button" id="fonte-diminuir" aria-label="Diminuir fonte">A-</button>
+                    <button type="button" id="fonte-padrao" aria-label="Fonte padrão">A</button>
+                    <button type="button" id="fonte-aumentar" aria-label="Aumentar fonte">A+</button>
+                </div>
+            </div>
         
-            <h1  class="titulo">VIGIA FÁCIL</h1>
+            <a href="{% url 'index-denuncia' %}"><h1  class="titulo">VIGIA FÁCIL</h1></a>
+            
             <nav class="acoes">
                 <a href="{% url 'acompanhar-denuncia' %}" class="link-acompanhar">Acompanhar denúncia</a>
             
@@ -23,6 +37,19 @@
             </nav>
         </div>
     </header>
+
+    <div class="aviso-urgencia" role="note">
+        <svg class="aviso-icone" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3 2 21h20L12 3Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M12 10v5M12 18v.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <p>
+            <strong>Risco imediato à vida?</strong>
+            Esta página não substitui o atendimento de urgência.
+            <strong>Ligue 192 (SAMU).</strong>
+        </p>
+    </div>
+
     <main>
         <div class="container apresentacao"> 
             <div class="apresentacao-texto">
@@ -36,11 +63,10 @@
             </div>
 
             <div class="apresentacao-info">
-                <p class="apresentacao-info-item">Anonimato Opcional:...</p>
-                <p class="apresentacao-info-item">Acompanhamento de denúncia:...</p>
-                <p class="apresentacao-info-item">Direcionamento automático para o setor responsável:...</p>
-                <p class="apresentacao-info-item">Direcionamento automático para o setor responsável:...</p>
-                <p>...</p>
+                <p class="apresentacao-info-item"><strong>Anonimato Opcional:</strong> Sua identidade está segura aqui, caso não queira informa-lá, nós a manteremos completamente anônima.</p>
+                <p class="apresentacao-info-item"><strong>Acompanhamento de denúncia:</strong> Nosso site permite o acompanhamento da situação da sua denúncia em tempo real.</p>
+                <p class="apresentacao-info-item"><strong>Direcionamento automático para o setor responsável:</strong> O site facilita o direcionamento das suas denúncias e permite que você as faça em uma única plataforma.</p>
+
             </div>
         </div>
 
@@ -51,16 +77,34 @@
 
             <div class="informacoes-lista">
                 <div class="informacoes-item">
+                    <img src="{% static 'denuncia/images/ratos-icone.png' %}" alt="" class="informacoes-icone">
+                    <h3>Animais peçonhentos</h3>
+                    <p>Presença de animais peçonhentos ou causadores de doenças, como ratos, baratas, cobras, escorpiões, entre outros</p>
                 </div>
                 <div class="informacoes-item">
+                    <img src="{% static 'denuncia/images/mosquito-icone.png' %}" alt="" class="informacoes-icone">
+                    <h3>Focos de vetores de doenças</h3>
+                    <p>Focos de vetores de doenças, como o mosquito da dengue, chikungunya, zika, febre amarela, entre outros</p>
                 </div>
                 <div class="informacoes-item">
+                    <img src="{% static 'denuncia/images/lavando-as-maos-icone.png' %}" alt="" class="informacoes-icone">
+                    <h3>Falta de higiene</h3>
+                    <p>Falta de higiene em estabelecimentos, seja no próprio local ou no serviço prestado</p>
                 </div>
                 <div class="informacoes-item">
+                    <img src="{% static 'denuncia/images/radioativo-icone.png' %}" alt="" class="informacoes-icone">
+                    <h3>Substâncias perigosas</h3>
+                    <p>Exposição a substâncias que podem causar intoxicação, doenças ou feridas na pele</p>
                 </div>
                 <div class="informacoes-item">
+                    <img src="{% static 'denuncia/images/lixo-icone.png' %}" alt="" class="informacoes-icone">
+                    <h3>Descarte irregular de lixo</h3>
+                    <p>Descarte de lixo na rua ou em lugares inadequados</p>
                 </div>
                 <div class="informacoes-item">
+                    <img src="{% static 'denuncia/images/esgoto-icone.png' %}" alt="" class="informacoes-icone">
+                    <h3>Esgoto</h3>
+                    <p>Falta de manutenção em redes de esgoto</p>
                 </div>
             </div>
         </div>
@@ -93,6 +137,27 @@
     <footer>
         <div class="rodape"></div>
     </footer>
+    <script src="{% static 'denuncia/js/fonte.js' %}"></script>
     <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
 </body>
 </html>
+<!--
+Referência dos ícones:
+Rato ícones criados por Nadiinko - Flaticon
+https://www.flaticon.com/br/icones-gratis/rato" title="rato ícones
+
+Mosquito ícones criados por Icongeek26 - Flaticon
+https://www.flaticon.com/br/icones-gratis/mosquito" title="mosquito ícones
+
+Higiene ícones criados por tulpahn - Flaticon:
+https://www.flaticon.com/br/icones-gratis/higiene
+
+Substancias químicas ícones criados por Magnific - Flaticon:
+https://www.flaticon.com/br/icones-gratis/substancias-quimicas
+
+Lixo ícones criados por Eucalyp - Flaticon
+https://www.flaticon.com/br/icones-gratis/lixo
+
+Esgoto ícones criados por surang - Flaticon:
+https://www.flaticon.com/br/icones-gratis/esgoto
+-->

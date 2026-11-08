@@ -1,11 +1,32 @@
-body {
+html, body {
+    min-height: 100%;
     margin: 0;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     color: #000000;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400; 
+    font-size: 1rem;  
+    line-height: 1.65;
     background-color: #ffffff;
+}
+
+main {
+    flex: 1;
+}
+
+h1, h2, h3 {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.2;
 }
 
 a {
     text-decoration: none;
+    color: inherit;
 }
 
 button,
@@ -14,9 +35,11 @@ input {
 }
 
 .container {
+    width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
-    padding-left: 5rem;
-    padding-right: 5rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
 }
 
 /* CABEÇALHO */
@@ -35,31 +58,46 @@ header {
 }
 
 header img {
+    display: block;
     width: auto;
-    height: 6rem;
+    height: 5rem;
 }
 
 .titulo {
     margin: 0;
-    font-size: 2rem;
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
     text-align: center;
 }
 
-.acoes-cabecalho {
+.acoes {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 1rem;
+    gap: 1.5rem;
+}
+
+.link-acompanhar {
+    color: #000000;
+    font-size:  1rem;
+    font-weight: 500;
 }
 
 .btn-denunciar {
-    color: #ffffff;
-    background-color: #000000;
+    display: inline-block;
+    color: #fff;
+    background: #000000;
     font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
     border: 1px solid #000000;
     border-radius: 5px;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
+    padding: 0.5rem 1.5rem;
+}
+
+.btn-denunciar:hover {
+    background-color: #333333;
 }
 
 .btn-denunciar:hover,
@@ -71,9 +109,13 @@ header img {
 /* CONTEÚDO PRINCIPAL */
 
 .pagina-acompanhar {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     padding-top: 3rem;
     padding-bottom: 4rem;
-    max-width: 900px;
+    max-width: 1200px;
 }
 
 .topo-secao {
@@ -113,7 +155,7 @@ header img {
 .campo-grupo {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 5px;
     flex: 1;
     min-width: 250px;
 }
@@ -121,6 +163,7 @@ header img {
 .campo-grupo label {
     font-size: 1rem;
     font-weight: bold;
+    margin-bottom: 0;
 }
 
 .campo-grupo input {
@@ -133,6 +176,7 @@ header img {
     outline: none;
     box-sizing: border-box;
     text-transform: uppercase;
+    margin-bottom: 10px;
 }
 
 .campo-grupo input:focus {
@@ -142,11 +186,13 @@ header img {
 .btn-consultar {
     color: #ffffff;
     background-color: #000000;
+    width: 100%;
     border: 1px solid #000000;
     border-radius: 5px;
     padding: 0.65rem 1.5rem;
     font-size: 1rem;
     cursor: pointer;
+    margin-top: 15px;
 }
 
 /* ALERTA DE ERRO */
@@ -221,10 +267,42 @@ header img {
 
 /* RODAPÉ */
 
+footer {
+    margin-top: auto;
+}
+
 .rodape {
     background-color: #D9D9D9;
-    margin-top: 4rem;
     height: 100px;
+}
+
+.cabecalho-esquerda {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.acoes {
+    white-space: nowrap;
+}
+
+.ajuste-fonte button {
+    min-width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #000000;
+    background: #fff;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.ajuste-fonte {
+    display: flex;
+    gap: 0.25rem;
 }
 
 /* RESPONSIVIDADE */

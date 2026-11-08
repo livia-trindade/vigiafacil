@@ -1,11 +1,30 @@
-body {
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+html, body {
+    height: 100%;
     margin: 0;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     color: #000000;
     background-color: #ffffff;
+    font-family: "Roboto", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-variation-settings:
+    "wdth" 100;
+}
+
+main {
+    flex: 1;
 }
 
 a {
     text-decoration: none;
+    color: inherit;
 }
 
 button,
@@ -14,9 +33,10 @@ select {
 }
 
 .container {
+    max-width: 1200px;
     margin: 0 auto;
-    padding-left: 5rem;
-    padding-right: 5rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
 }
 
 /* CABEÇALHO */
@@ -76,6 +96,11 @@ header img {
 /* CONTEÚDO PRINCIPAL */
 
 .painel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: calc(100% - 4rem);
     padding-top: 3rem;
     padding-bottom: 4rem;
 }
@@ -123,7 +148,7 @@ header img {
 
 .filtro-grupo select {
     min-width: 220px;
-    padding: 0.5rem 0.75rem;
+    padding: 0.5rem 2rem 0.5rem 0.75rem;
     font-size: 1rem;
     background-color: #ffffff;
     color: #000000;
@@ -238,6 +263,23 @@ tbody tr:last-child td {
     font-size: 0.85rem;
 }
 
+.status-pendente { 
+    background-color: #FFD1CF; 
+    border: 1px solid #C3635E;
+}
+.status-em_analise { 
+    background-color: #FFF4B2; 
+    border: 1px solid #C5B663;
+}
+.status-em_andamento { 
+    background-color: #FFD292; 
+    border: 1px solid #C89C5E;
+}
+.status-concluida { 
+    background-color: #CFEDCF; 
+    border: 1px solid #5BB05B;
+}
+
 .btn-detalhes {
     display: inline-block;
     color: #ffffff;
@@ -267,11 +309,43 @@ tbody tr:last-child td {
     font-size: 1rem;
 }
 
+.cabecalho-esquerda {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.acoes {
+    white-space: nowrap;
+}
+
+.ajuste-fonte button {
+    min-width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #000000;
+    background: #fff;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.ajuste-fonte {
+    display: flex;
+    gap: 0.25rem;
+}
+
 /* RODAPÉ */
+
+footer {
+    margin-top: auto;
+}
 
 .rodape {
     background-color: #D9D9D9;
-    margin-top: 4rem;
     height: 100px;
 }
 

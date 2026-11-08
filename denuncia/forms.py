@@ -1,6 +1,8 @@
 
 from django import forms
-from .models import Denuncia, TODOS_OS_PROBLEMAS, PROBLEMAS_POR_CATEGORIA
+from .models import Denuncia
+from django.utils import timezone
+import re
 
 
 class DenunciaForm(forms.ModelForm):
@@ -9,8 +11,6 @@ class DenunciaForm(forms.ModelForm):
         model = Denuncia
 
         fields = [
-            'tipo',
-            'problema',
             'descricao',
             'endereco',
             'ponto_referencia',
@@ -23,16 +23,6 @@ class DenunciaForm(forms.ModelForm):
         ]
 
         widgets = {
-            'tipo': forms.Select(attrs={
-                'class': 'form-control',
-                'id': 'id_tipo',
-            }),
-
-            'problema': forms.Select(attrs={
-                'class': 'form-control',
-                'id': 'id_problema',
-            }),
-
             'descricao': forms.Textarea(attrs={
                 'class': 'form-control',
                 'rows': 4,
@@ -57,6 +47,7 @@ class DenunciaForm(forms.ModelForm):
             'data_ocorrencia': forms.DateInput(attrs={
                 'class': 'form-control',
                 'type': 'date',
+                'max': timezone.localdate().isoformat(),
             }),
 
             'foto': forms.ClearableFileInput(attrs={
@@ -79,23 +70,6 @@ class DenunciaForm(forms.ModelForm):
             }),
         }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        tipo = (
-            self.data.get('tipo')
-            or self.initial.get('tipo')
-            or getattr(self.instance, 'tipo', '')
-        )
-
-        problemas = PROBLEMAS_POR_CATEGORIA.get(tipo, [])
-
-        self.fields['problema'].choices = [
-            ('', 'Selecione um problema')
-        ] + problemas
-
-        self.fields['problema'].required = True
-
     def clean(self):
         cleaned_data = super().clean()
 
@@ -115,5 +89,50 @@ class DenunciaForm(forms.ModelForm):
                     'telefone_denunciante',
                     'Informe seu telefone para realizar uma denúncia identificada.'
                 )
+
+        return cleaned_data
+
+    def clean_data_ocorrencia(self):
+        data = self.cleaned_data.get('data_ocorrencia')
+
+        if data and data > timezone.localdate():
+            raise forms.ValidationError(
+                'A data da ocorrência não pode ser futura.'
+            )
+
+        return data
+
+class SenhaDenunciaForm(forms.Form):
+    senha = forms.CharField(
+        label='Senha',
+        min_length=8,
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
+        error_messages={
+            'required': 'Informe uma senha.',
+            'min_length': 'A senha deve ter no mínimo 8 caracteres.',
+        },
+    )
+
+    confirmar_senha = forms.CharField(
+        label='Confirme a senha',
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
+        error_messages={'required': 'Confirme a senha.'},
+    )
+
+    def clean_senha(self):
+        senha = self.cleaned_data['senha']
+
+        if not (re.search(r'[A-Za-zÀ-ÿ]', senha) and re.search(r'\d', senha)):
+            raise forms.ValidationError('A senha deve conter letras e números.')
+
+        return senha
+
+    def clean(self):
+        cleaned_data = super().clean()
+        senha = cleaned_data.get('senha')
+        confirmar = cleaned_data.get('confirmar_senha')
+
+        if senha and confirmar and senha != confirmar:
+            self.add_error('confirmar_senha', 'As senhas não são iguais.')
 
         return cleaned_data
