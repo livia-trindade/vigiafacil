@@ -1,6 +1,8 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,6 +17,7 @@
 </head>
 
 <body>
+
     <header>
     </header>
 
@@ -23,6 +26,7 @@
             <path d="M12 3 2 21h20L12 3Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
             <path d="M12 10v5M12 18v.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
+
         <p>
             <strong>Risco imediato à vida?</strong>
             Esta página não substitui o atendimento de urgência.
@@ -31,15 +35,19 @@
     </div>
 
     <main class="container container-registro">
+
         <div class="registro-navegacao">
-            <a href="#" class="link-voltar">&larr; Voltar à etapa 1</a>
- 
+            <a href="{% url 'setor-denuncia' %}" class="link-voltar">
+                &larr; Voltar à etapa 1
+            </a>
+
             <div class="registro-navegacao-direita">
                 <div class="ajuste-fonte" role="group" aria-label="Tamanho da fonte">
                     <button type="button" id="fonte-diminuir" aria-label="Diminuir fonte">A-</button>
                     <button type="button" id="fonte-padrao" aria-label="Fonte padrão">A</button>
                     <button type="button" id="fonte-aumentar" aria-label="Aumentar fonte">A+</button>
                 </div>
+
                 <span class="etapa-contador">Etapa 2 de 2</span>
             </div>
         </div>
@@ -47,8 +55,18 @@
         <h1 class="registro-titulo">Registrar denúncia</h1>
 
         <section class="formulario-card">
-            <form method="POST" enctype="multipart/form-data" class="form-denuncia"     id="form-denuncia" data-enviado="{{ form.is_bound|yesno:'true,false' }}">
+
+            <form method="POST"
+                  enctype="multipart/form-data"
+                  class="form-denuncia"
+                  id="form-denuncia"
+                  data-enviado="{{ form.is_bound|yesno:'true,false' }}">
+
                 {% csrf_token %}
+
+                <!-- Categoria e problema selecionados na etapa anterior -->
+                <input type="hidden" name="tipo" value="{{ tipo_selecionado }}">
+                <input type="hidden" name="problema" value="{{ problema_selecionado }}">
 
                 {% if form.non_field_errors %}
                     <div class="alerta-erro">
@@ -60,65 +78,107 @@
                     <div class="setor-texto">
                         <span class="setor-rotulo">Será encaminhada para</span>
                         <strong id="setor-nome">{{ nome_setor }}</strong>
-                </div>
-                <a href="#" class="setor-alterar">Alterar</a>
+                    </div>
+
+                    <a href="{% url 'setor-denuncia' %}" class="setor-alterar">
+                        Alterar
+                    </a>
                 </div>
 
-                <p class="nota-obrigatorio">Campos com <span class="obrigatorio">*</span> são obrigatórios</p>
+                <p class="nota-obrigatorio">
+                    Campos com <span class="obrigatorio">*</span> são obrigatórios
+                </p>
 
                 <div class="campo-grupo">
-                    <label for="{{ form.descricao.id_for_label }}">Descrição <span class="obrigatorio">*</span></label>
-                    {{ form.descricao }} {{ form.descricao.errors }}
+                    <label for="{{ form.descricao.id_for_label }}">
+                        Descrição <span class="obrigatorio">*</span>
+                    </label>
+
+                    {{ form.descricao }}
+                    {{ form.descricao.errors }}
                 </div>
 
                 <div class="campo-grupo">
-                    <label for="{{ form.data_ocorrencia.id_for_label }}">Quando aconteceu? <span class="obrigatorio">*</span></label>
-                    {{ form.data_ocorrencia }} {{ form.data_ocorrencia.errors }}
+                    <label for="{{ form.data_ocorrencia.id_for_label }}">
+                        Quando aconteceu? <span class="obrigatorio">*</span>
+                    </label>
+
+                    {{ form.data_ocorrencia }}
+                    {{ form.data_ocorrencia.errors }}
                 </div>
 
                 <fieldset class="campo-grupo">
-                    <legend>Localização <span class="obrigatorio">*</span></legend>
-                
+                    <legend>
+                        Localização <span class="obrigatorio">*</span>
+                    </legend>
+
                     <div class="campo-grupo">
-                        <label for="{{ form.endereco.id_for_label }}" class="rotulo-secundario">Endereço</label>
-                        {{ form.endereco }} {{ form.endereco.errors }}
+                        <label for="{{ form.endereco.id_for_label }}" class="rotulo-secundario">
+                            Endereço
+                        </label>
+
+                        {{ form.endereco }}
+                        {{ form.endereco.errors }}
                     </div>
-                
+
                     <div class="linha-dupla">
                         <div class="campo-grupo">
-                            <label for="{{ form.bairro.id_for_label }}" class="rotulo-secundario">Bairro</label>
-                            {{ form.bairro }} {{ form.bairro.errors }}
+                            <label for="{{ form.bairro.id_for_label }}" class="rotulo-secundario">
+                                Bairro
+                            </label>
+
+                            {{ form.bairro }}
+                            {{ form.bairro.errors }}
                         </div>
+
                         <div class="campo-grupo">
-                            <label for="{{ form.ponto_referencia.id_for_label }}" class="rotulo-secundario">Ponto de referência</label>
-                            {{ form.ponto_referencia }} {{ form.ponto_referencia.errors }}
+                            <label for="{{ form.ponto_referencia.id_for_label }}" class="rotulo-secundario">
+                                Ponto de referência
+                            </label>
+
+                            {{ form.ponto_referencia }}
+                            {{ form.ponto_referencia.errors }}
                         </div>
                     </div>
                 </fieldset>
 
                 <div class="campo-grupo">
                     <span class="rotulo">Fotos ou documentos</span>
-                    <p class="campo-ajuda">Adicionar fotos ou documentos pode ajudar a comprovar o ocorrido e facilitar a apuração da denúncia</p>
+
+                    <p class="campo-ajuda">
+                        Adicionar fotos ou documentos pode ajudar a comprovar o ocorrido e facilitar a apuração da denúncia.
+                    </p>
 
                     <div class="campo-arquivo">
                         {{ form.foto }}
+
                         <label for="{{ form.foto.id_for_label }}" class="btn-anexar">
                             <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
                                 <path d="M12 16V4M12 4 7 9M12 4l5 5M4 16v4h16v-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
+
                             <span id="nome-arquivo">Anexar fotos ou documentos</span>
                         </label>
                     </div>
+
                     {{ form.foto.errors }}
                 </div>
 
                 <fieldset class="campo-grupo">
-                    <legend>Como deseja se identificar? <span class="obrigatorio">*</span></legend>
+                    <legend>
+                        Como deseja se identificar? <span class="obrigatorio">*</span>
+                    </legend>
 
-                    <div hidden>{{ form.anonima }}</div>
+                    <div hidden>
+                        {{ form.anonima }}
+                    </div>
 
                     <label class="opcao-card">
-                        <input type="radio" name="modo_identificacao" id="opcao-anonima" value="anonima">
+                        <input type="radio"
+                               name="modo_identificacao"
+                               id="opcao-anonima"
+                               value="anonima">
+
                         <span class="opcao-texto">
                             <strong>Denúncia anônima</strong>
                             Não pedimos seus dados. Você acompanha pelo protocolo e uma senha.
@@ -126,7 +186,11 @@
                     </label>
 
                     <label class="opcao-card">
-                        <input type="radio" name="modo_identificacao" id="opcao-identificar" value="identificar">
+                        <input type="radio"
+                               name="modo_identificacao"
+                               id="opcao-identificar"
+                               value="identificar">
+
                         <span class="opcao-texto">
                             <strong>Quero me identificar</strong>
                             Podemos entrar em contato se precisarmos de mais informações. Seus dados não são divulgados ao denunciado.
@@ -135,20 +199,35 @@
 
                     <div id="container-identificacao" class="linha-dupla">
                         <div class="campo-grupo">
-                            <label for="{{ form.nome_denunciante.id_for_label }}" class="rotulo-secundario">Nome completo</label>
-                            {{ form.nome_denunciante }} {{ form.nome_denunciante.errors }}
+                            <label for="{{ form.nome_denunciante.id_for_label }}" class="rotulo-secundario">
+                                Nome completo
+                            </label>
+
+                            {{ form.nome_denunciante }}
+                            {{ form.nome_denunciante.errors }}
                         </div>
+
                         <div class="campo-grupo">
-                            <label for="{{ form.telefone_denunciante.id_for_label }}" class="rotulo-secundario">Telefone</label>
-                            {{ form.telefone_denunciante }} {{ form.telefone_denunciante.errors }}
+                            <label for="{{ form.telefone_denunciante.id_for_label }}" class="rotulo-secundario">
+                                Telefone
+                            </label>
+
+                            {{ form.telefone_denunciante }}
+                            {{ form.telefone_denunciante.errors }}
                         </div>
                     </div>
                 </fieldset>
 
                 <div class="acoes-formulario">
-                    <button type="submit" class="btn-enviar">Registrar</button>
-                    <a href="{% url 'index-denuncia' %}" class="btn-cancelar">Cancelar</a>
+                    <button type="submit" class="btn-enviar">
+                        Registrar
+                    </button>
+
+                    <a href="{% url 'index-denuncia' %}" class="btn-cancelar">
+                        Cancelar
+                    </a>
                 </div>
+
             </form>
         </section>
     </main>
@@ -157,175 +236,120 @@
         <div class="rodape"></div>
     </footer>
 
-
+    <!-- VLibras -->
     <div vw class="enabled">
         <div vw-access-button class="active"></div>
         <div vw-plugin-wrapper>
             <div class="vw-plugin-top-wrapper"></div>
         </div>
     </div>
-        <script src="{% static 'denuncia/js/fonte.js' %}"></script>
+
+    <script src="{% static 'denuncia/js/fonte.js' %}"></script>
+
     <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+
     <script>
         new window.VLibras.Widget('https://vlibras.gov.br/app');
     </script>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const categoria = document.getElementById('id_tipo');
-        const problema = document.getElementById('id_problema');
+        document.addEventListener('DOMContentLoaded', function () {
 
-        const problemasPorCategoria = {
-            'mosquitos_insetos': [
-                ['dengue', 'Dengue'],
-                ['barbeiro', 'Barbeiro'],
-                ['carrapatos', 'Carrapatos'],
-                ['outros_insetos', 'Outros problemas relacionados a mosquitos e insetos']
-            ],
-            'animais': [
-                ['animal_peconhento', 'Animal peçonhento'],
-                ['animal_silvestre', 'Animal silvestre'],
-                ['suspeita_raiva', 'Suspeita de raiva'],
-                ['maus_tratos_abandono', 'Maus-tratos ou abandono']
-            ],
-            'alimentacao_mercado': [
-                ['comida_estragada', 'Comida estragada'],
-                ['sujeira', 'Sujeira'],
-                ['suspeita_contaminacao', 'Suspeita de contaminação']
-            ],
-            'agua_esgoto': [
-                ['agua_suja_cheiro', 'Água suja ou com cheiro'],
-                ['esgoto_ceu_aberto', 'Esgoto a céu aberto'],
-                ['poco_contaminado', 'Poço contaminado']
-            ],
-            'empresas_trabalho': [
-                ['falta_epi', 'Falta de EPI'],
-                ['poeira_fumaca', 'Poeira ou fumaça excessiva'],
-                ['condicoes_insalubres', 'Condições insalubres']
-            ],
-            'outro': [
-                ['outro_problema', 'Outro problema']
-            ]
-        };
+            // Identificação: controla o checkbox "anonima" do Django
+            const form = document.getElementById('form-denuncia');
+            const checkboxAnonima = document.getElementById('id_anonima');
+            const opcaoAnonima = document.getElementById('opcao-anonima');
+            const opcaoIdentificar = document.getElementById('opcao-identificar');
+            const containerIdentificacao = document.getElementById('container-identificacao');
 
-        function atualizarProblemas() {
-            if (!categoria || !problema) return;
-            const valorAtual = problema.value;
-            const categoriaSelecionada = categoria.value;
-            const problemas = problemasPorCategoria[categoriaSelecionada] || [];
+            const inputNome = document.getElementById('id_nome_denunciante');
+            const inputTelefone = document.getElementById('id_telefone_denunciante');
 
-            problema.innerHTML = '<option value="">Selecione um problema</option>';
+            function aplicarIdentificacao() {
+                const anonima = opcaoAnonima.checked;
 
-            problemas.forEach(function (item) {
-                const option = document.createElement('option');
-                option.value = item[0];
-                option.textContent = item[1];
-                if (item[0] === valorAtual) {
-                    option.selected = true;
-                }
-                problema.appendChild(option);
-            });
-        }
+                checkboxAnonima.checked = anonima;
 
-                // Caixa "Será encaminhada para"
-        const setorNome = document.getElementById('setor-nome');
-        const setorAlterar = document.getElementById('setor-alterar');
+                if (anonima) {
+                    containerIdentificacao.style.display = 'none';
 
-        function atualizarSetor() {
-            if (!categoria || !setorNome) return;
-            const opcao = categoria.options[categoria.selectedIndex];
-            setorNome.textContent = (categoria.value && opcao) ? opcao.textContent : 'Selecione uma categoria';
-        }
+                    if (inputNome) {
+                        inputNome.value = '';
+                        inputNome.removeAttribute('required');
+                    }
 
-        if (categoria) {
-            categoria.addEventListener('change', function () {
-                atualizarProblemas();
-                atualizarSetor();
-            });
-            atualizarProblemas();
-            atualizarSetor();
-        }
+                    if (inputTelefone) {
+                        inputTelefone.value = '';
+                        inputTelefone.removeAttribute('required');
+                    }
 
-        if (setorAlterar && categoria) {
-            setorAlterar.addEventListener('click', function () {
-                categoria.focus();
-            });
-        }
-
-        // Identificação: as opções controlam o checkbox "anonima" do Django
-        const form = document.getElementById('form-denuncia');
-        const checkboxAnonima = document.getElementById('id_anonima');
-        const opcaoAnonima = document.getElementById('opcao-anonima');
-        const opcaoIdentificar = document.getElementById('opcao-identificar');
-        const containerIdentificacao = document.getElementById('container-identificacao');
-        const inputNome = document.getElementById('id_nome_denunciante');
-        const inputTelefone = document.getElementById('id_telefone_denunciante');
-
-        function aplicarIdentificacao() {
-            const anonima = opcaoAnonima.checked;
-            checkboxAnonima.checked = anonima;
-
-            if (anonima) {
-                containerIdentificacao.style.display = 'none';
-                if (inputNome) { inputNome.value = ''; inputNome.removeAttribute('required'); }
-                if (inputTelefone) { inputTelefone.value = ''; inputTelefone.removeAttribute('required'); }
-            } else {
-                containerIdentificacao.style.display = 'grid';
-            }
-        }
-
-        if (checkboxAnonima && opcaoAnonima && opcaoIdentificar && containerIdentificacao) {
-            if (form.dataset.enviado !== 'true') {
-                checkboxAnonima.checked = true;
-            }
-            opcaoAnonima.checked = checkboxAnonima.checked;
-            opcaoIdentificar.checked = !checkboxAnonima.checked;
-
-            opcaoAnonima.addEventListener('change', aplicarIdentificacao);
-            opcaoIdentificar.addEventListener('change', aplicarIdentificacao);
-            aplicarIdentificacao();
-        }
-
-        function mascararTelefone(valor) {
-            const n = valor.replace(/\D/g, '').slice(0, 11);
-            if (n.length === 0) return '';
-            if (n.length <= 2) return '(' + n;
-            if (n.length <= 6) return '(' + n.slice(0, 2) + ') ' + n.slice(2);
-            if (n.length <= 10) return '(' + n.slice(0, 2) + ') ' + n.slice(2, 6) + '-' + n.slice(6);
-            return '(' + n.slice(0, 2) + ') ' + n.slice(2, 7) + '-' + n.slice(7);
-        }
-
-        if (inputTelefone) {
-            inputTelefone.setAttribute('placeholder', '(DDD) 00000-0000');
-            inputTelefone.setAttribute('maxlength', '15');
-            inputTelefone.setAttribute('inputmode', 'tel');
-            inputTelefone.setAttribute('autocomplete', 'tel');
-
-            inputTelefone.value = mascararTelefone(inputTelefone.value);
-
-            inputTelefone.addEventListener('input', function () {
-                inputTelefone.value = mascararTelefone(inputTelefone.value);
-            });
-        }
-        
-
-        const inputFoto = document.getElementById('id_foto');
-        const nomeArquivo = document.getElementById('nome-arquivo');
-
-        if (inputFoto && nomeArquivo) {
-            inputFoto.addEventListener('change', function () {
-                const total = inputFoto.files.length;
-                if (total === 0) {
-                    nomeArquivo.textContent = 'Anexar fotos ou documentos';
-                } else if (total === 1) {
-                    nomeArquivo.textContent = inputFoto.files[0].name;
                 } else {
-                    nomeArquivo.textContent = total + ' arquivos selecionados';
+                    containerIdentificacao.style.display = 'grid';
                 }
-            });
-        }
-    });
+            }
+
+            if (checkboxAnonima && opcaoAnonima && opcaoIdentificar && containerIdentificacao) {
+
+                if (form.dataset.enviado !== 'true') {
+                    checkboxAnonima.checked = true;
+                }
+
+                opcaoAnonima.checked = checkboxAnonima.checked;
+                opcaoIdentificar.checked = !checkboxAnonima.checked;
+
+                opcaoAnonima.addEventListener('change', aplicarIdentificacao);
+                opcaoIdentificar.addEventListener('change', aplicarIdentificacao);
+
+                aplicarIdentificacao();
+            }
+
+            // Máscara para telefone
+            function mascararTelefone(valor) {
+                const n = valor.replace(/\D/g, '').slice(0, 11);
+
+                if (n.length === 0) return '';
+                if (n.length <= 2) return '(' + n;
+                if (n.length <= 6) return '(' + n.slice(0, 2) + ') ' + n.slice(2);
+                if (n.length <= 10) return '(' + n.slice(0, 2) + ') ' + n.slice(2, 6) + '-' + n.slice(6);
+
+                return '(' + n.slice(0, 2) + ') ' + n.slice(2, 7) + '-' + n.slice(7);
+            }
+
+            if (inputTelefone) {
+                inputTelefone.setAttribute('placeholder', '(DDD) 00000-0000');
+                inputTelefone.setAttribute('maxlength', '15');
+                inputTelefone.setAttribute('inputmode', 'tel');
+                inputTelefone.setAttribute('autocomplete', 'tel');
+
+                inputTelefone.value = mascararTelefone(inputTelefone.value);
+
+                inputTelefone.addEventListener('input', function () {
+                    inputTelefone.value = mascararTelefone(inputTelefone.value);
+                });
+            }
+
+            // Exibição do nome do arquivo selecionado
+            const inputFoto = document.getElementById('id_foto');
+            const nomeArquivo = document.getElementById('nome-arquivo');
+
+            if (inputFoto && nomeArquivo) {
+                inputFoto.addEventListener('change', function () {
+                    const total = inputFoto.files.length;
+
+                    if (total === 0) {
+                        nomeArquivo.textContent = 'Anexar fotos ou documentos';
+
+                    } else if (total === 1) {
+                        nomeArquivo.textContent = inputFoto.files[0].name;
+
+                    } else {
+                        nomeArquivo.textContent = total + ' arquivos selecionados';
+                    }
+                });
+            }
+
+        });
     </script>
-     
+
 </body>
 </html>

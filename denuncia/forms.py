@@ -11,6 +11,8 @@ class DenunciaForm(forms.ModelForm):
         model = Denuncia
 
         fields = [
+            'tipo',
+            'problema',
             'descricao',
             'endereco',
             'ponto_referencia',
@@ -102,11 +104,15 @@ class DenunciaForm(forms.ModelForm):
 
         return data
 
+
 class SenhaDenunciaForm(forms.Form):
+
     senha = forms.CharField(
         label='Senha',
         min_length=8,
-        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
+        widget=forms.PasswordInput(
+            attrs={'autocomplete': 'new-password'}
+        ),
         error_messages={
             'required': 'Informe uma senha.',
             'min_length': 'A senha deve ter no mínimo 8 caracteres.',
@@ -115,24 +121,37 @@ class SenhaDenunciaForm(forms.Form):
 
     confirmar_senha = forms.CharField(
         label='Confirme a senha',
-        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
-        error_messages={'required': 'Confirme a senha.'},
+        widget=forms.PasswordInput(
+            attrs={'autocomplete': 'new-password'}
+        ),
+        error_messages={
+            'required': 'Confirme a senha.',
+        },
     )
 
     def clean_senha(self):
         senha = self.cleaned_data['senha']
 
-        if not (re.search(r'[A-Za-zÀ-ÿ]', senha) and re.search(r'\d', senha)):
-            raise forms.ValidationError('A senha deve conter letras e números.')
+        if not (
+            re.search(r'[A-Za-zÀ-ÿ]', senha)
+            and re.search(r'\d', senha)
+        ):
+            raise forms.ValidationError(
+                'A senha deve conter letras e números.'
+            )
 
         return senha
 
     def clean(self):
         cleaned_data = super().clean()
+
         senha = cleaned_data.get('senha')
         confirmar = cleaned_data.get('confirmar_senha')
 
         if senha and confirmar and senha != confirmar:
-            self.add_error('confirmar_senha', 'As senhas não são iguais.')
+            self.add_error(
+                'confirmar_senha',
+                'As senhas não são iguais.'
+            )
 
         return cleaned_data

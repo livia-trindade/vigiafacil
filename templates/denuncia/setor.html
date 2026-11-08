@@ -1,33 +1,126 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'denuncia/css/registro.css' %}">
-
-    <title>Registrar Denúncia | Vigia Fácil</title>
+    <title>Selecionar setor | Vigia Fácil</title>
 </head>
 <body>
+
     <header></header>
 
-     <div class="aviso-urgencia" role="note">
-        <svg class="aviso-icone" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 3 2 21h20L12 3Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-            <path d="M12 10v5M12 18v.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
+    <div class="aviso-urgencia" role="note">
         <p>
             <strong>Risco imediato à vida?</strong>
             Esta página não substitui o atendimento de urgência.
             <strong>Ligue 192 (SAMU).</strong>
         </p>
     </div>
-    
-    <main></main>
-    <footer></footer>
+
+    <main class="container container-registro">
+        <h1 class="registro-titulo">Registrar denúncia</h1>
+        <p class="etapa-indicador">Etapa 1 de 2</p>
+
+        <section class="formulario-card">
+            <h2>Selecione o setor relacionado à denúncia</h2>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <fieldset class="campo-grupo">
+                    <legend>Setores disponíveis</legend>
+                    <div class="grade-opcoes">
+                        {% for valor, nome in categorias %}
+                            <label class="opcao-card">
+                                <input
+                                    type="radio"
+                                    name="tipo"
+                                    value="{{ valor }}"
+                                    required
+                                >
+                                <span class="opcao-texto">
+                                    <strong>{{ nome }}</strong>
+                                </span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                </fieldset>
+
+                <!-- Campo dinâmico de problema -->
+                <div id="container-problema" class="campo-problema" style="display: none; margin-top: 24px;">
+                    <label for="select-problema" class="rotulo-campo">
+                        Qual é o problema específico?
+                    </label>
+                    <select name="problema" id="select-problema" class="form-control" required>
+                        <option value="">Selecione uma opção...</option>
+                    </select>
+                </div>
+
+                <div class="acoes-formulario" style="margin-top: 28px;">
+                    <button type="submit" class="btn-enviar">
+                        Continuar
+                    </button>
+                    <a href="{% url 'index-denuncia' %}" class="btn-cancelar">
+                        Cancelar
+                    </a>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <!-- Dados dos problemas passados pela view -->
+    <script id="dados-problemas" type="application/json">
+        {{ problemas_json|safe }}
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const containerProblema = document.getElementById('container-problema');
+            const selectProblema = document.getElementById('select-problema');
+            const radiosTipo = document.querySelectorAll('input[name="tipo"]');
+            
+            const problemasPorCategoria = JSON.parse(
+                document.getElementById('dados-problemas').textContent
+            );
+
+            function atualizarProblemas(tipoSelecionado) {
+                const lista = problemasPorCategoria[tipoSelecionado] || [];
+                
+                selectProblema.innerHTML = '<option value="">Selecione uma opção...</option>';
+
+                lista.forEach(function (item) {
+                    const option = document.createElement('option');
+                    option.value = item[0];
+                    option.textContent = item[1];
+                    selectProblema.appendChild(option);
+                });
+
+                if (lista.length > 0) {
+                    containerProblema.style.display = 'block';
+                    selectProblema.setAttribute('required', 'required');
+                } else {
+                    containerProblema.style.display = 'none';
+                    selectProblema.removeAttribute('required');
+                }
+            }
+
+            radiosTipo.forEach(function (radio) {
+                radio.addEventListener('change', function () {
+                    if (this.checked) {
+                        atualizarProblemas(this.value);
+                    }
+                });
+
+                if (radio.checked) {
+                    atualizarProblemas(radio.value);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
