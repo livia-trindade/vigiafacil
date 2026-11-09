@@ -81,7 +81,7 @@
             <p class="instrucao">Para consultar o andamento, você usará o número do protocolo junto com esta senha.</p>
             <p class="instrucao">Só você terá acesso.</p>
 
-            <form method="POST" class="form-senha" novalidate>
+            <form method="POST" class="form-senha" novalidate id="form-senha">
                 {% csrf_token %}
 
                 <div class="campo-senha">
@@ -209,6 +209,44 @@
             });
         });
     </script>
+
+    {% if not senha_cadastrada %}
+    <script>
+        (function () {
+            const MENSAGEM = 'Tem certeza que deseja sair? Se você não cadastrar uma senha, não será possível acompanhar o status da sua denúncia.';
+            const formSenha = document.getElementById('form-senha');
+            let permitirSaida = false;
+
+            // Enviar a senha não conta como "sair"
+            if (formSenha) {
+                formSenha.addEventListener('submit', function () {
+                    permitirSaida = true;
+                });
+            }
+
+            // Fechar a aba ou atualizar: aviso genérico do navegador (texto não personalizável)
+            window.addEventListener('beforeunload', function (evento) {
+                if (permitirSaida) return;
+                evento.preventDefault();
+                evento.returnValue = '';
+            });
+
+            // Botão voltar: mensagem personalizada
+            history.pushState(null, '', location.href);
+
+            window.addEventListener('popstate', function () {
+                if (permitirSaida) return;
+
+                if (confirm(MENSAGEM)) {
+                    permitirSaida = true;
+                    history.back();
+                } else {
+                    history.pushState(null, '', location.href);
+                }
+            });
+        })();
+    </script>
+    {% endif %}
 </body>
 
 </html>

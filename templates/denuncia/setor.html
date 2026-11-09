@@ -4,17 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'denuncia/css/setor.css' %}">
     <link rel="stylesheet" href="{% static 'denuncia/css/registro.css' %}">
-    <title>Selecionar setor | Vigia Fácil</title>
+    <title>Registrar Denúncia | Vigia Fácil</title>
 </head>
 <body>
-
     <header></header>
 
     <div class="aviso-urgencia" role="note">
+        <svg class="aviso-icone" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3 2 21h20L12 3Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M12 10v5M12 18v.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+
         <p>
             <strong>Risco imediato à vida?</strong>
             Esta página não substitui o atendimento de urgência.
@@ -23,103 +30,122 @@
     </div>
 
     <main class="container container-registro">
-        <h1 class="registro-titulo">Registrar denúncia</h1>
-        <p class="etapa-indicador">Etapa 1 de 2</p>
 
-        <section class="formulario-card">
-            <h2>Selecione o setor relacionado à denúncia</h2>
+        <div class="registro-navegacao">
+            <a href="{% url 'index-denuncia' %}" class="link-voltar">
+                &larr; Voltar para o início
+            </a>
 
-            <form method="POST">
-                {% csrf_token %}
-
-                <fieldset class="campo-grupo">
-                    <legend>Setores disponíveis</legend>
-                    <div class="grade-opcoes">
-                        {% for valor, nome in categorias %}
-                            <label class="opcao-card">
-                                <input
-                                    type="radio"
-                                    name="tipo"
-                                    value="{{ valor }}"
-                                    required
-                                >
-                                <span class="opcao-texto">
-                                    <strong>{{ nome }}</strong>
-                                </span>
-                            </label>
-                        {% endfor %}
-                    </div>
-                </fieldset>
-
-                <!-- Campo dinâmico de problema -->
-                <div id="container-problema" class="campo-problema" style="display: none; margin-top: 24px;">
-                    <label for="select-problema" class="rotulo-campo">
-                        Qual é o problema específico?
-                    </label>
-                    <select name="problema" id="select-problema" class="form-control" required>
-                        <option value="">Selecione uma opção...</option>
-                    </select>
+            <div class="registro-navegacao-direita">
+                <div class="ajuste-fonte" role="group" aria-label="Tamanho da fonte">
+                    <button type="button" id="fonte-diminuir" aria-label="Diminuir fonte">A-</button>
+                    <button type="button" id="fonte-padrao" aria-label="Fonte padrão">A</button>
+                    <button type="button" id="fonte-aumentar" aria-label="Aumentar fonte">A+</button>
                 </div>
 
-                <div class="acoes-formulario" style="margin-top: 28px;">
-                    <button type="submit" class="btn-enviar">
-                        Continuar
-                    </button>
-                    <a href="{% url 'index-denuncia' %}" class="btn-cancelar">
-                        Cancelar
-                    </a>
+                <span class="etapa-contador">Etapa 1 de 2</span>
+            </div>
+        </div>
+
+        <h1 class="registro-titulo">Qual o assunto da denúncia?</h1>
+        <p class="registro-subtitulo">Assim sabemos para qual setor encaminhar</p>
+
+        <section class="formulario-card">
+            <form method="POST" id="form-setor" autocomplete="off" novalidate>
+                {% csrf_token %}
+
+                <p class="chamada-perguntas">Sua denúncia tem relação com:</p>
+
+                <p class="erro-setor" id="erro-setor" role="alert" tabindex="-1" {% if not erro %}hidden{% endif %}>{{ erro }}</p>
+
+                <div class="setores-lista">
+                    {% for setor in setores %}
+                        <div class="setor-grupo" data-setor-nome="{{ setor.nome }}">
+                            <p class="pergunta-grupo-texto" id="enunciado-{{ setor.valor }}">{% for pergunta in setor.perguntas %}{{ pergunta }}{% if not forloop.last %} {% endif %}{% endfor %}</p>
+
+                            <div class="sim-nao" role="radiogroup" aria-labelledby="enunciado-{{ setor.valor }}">
+                                <label class="sim-nao-opcao">
+                                    <input type="radio" name="setor_{{ setor.valor }}" value="sim" {% if setor.sim %}checked{% endif %}>
+                                    <span>Sim</span>
+                                </label>
+                                <label class="sim-nao-opcao">
+                                    <input type="radio" name="setor_{{ setor.valor }}" value="nao" {% if not setor.sim %}checked{% endif %}>
+                                    <span>Não</span>
+                                </label>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="resumo-setores">
+                    <span class="resumo-rotulo">Sua denúncia será encaminhada para</span>
+                    <strong id="resumo-setores" aria-live="polite">Nenhum setor selecionado ainda</strong>
+                </div>
+
+                <div class="acoes-formulario">
+                    <button type="submit" class="btn-enviar">Continuar</button>
+                    <a href="{% url 'cancelar-denuncia' %}" class="btn-cancelar">Cancelar</a>
                 </div>
             </form>
         </section>
     </main>
 
-    <!-- Dados dos problemas passados pela view -->
-    <script id="dados-problemas" type="application/json">
-        {{ problemas_json|safe }}
-    </script>
+    <footer>
+        <div class="rodape"></div>
+    </footer>
+
+    <script src="{% static 'denuncia/js/fonte.js' %}"></script>
+
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
 
     <script>
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+    </script>
+
+ <script>
+        window.addEventListener('pageshow', function(event) {
+            // Se a página foi carregada do cache do navegador, força um reload completo do servidor
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                window.location.reload();
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', function () {
-            const containerProblema = document.getElementById('container-problema');
-            const selectProblema = document.getElementById('select-problema');
-            const radiosTipo = document.querySelectorAll('input[name="tipo"]');
-            
-            const problemasPorCategoria = JSON.parse(
-                document.getElementById('dados-problemas').textContent
-            );
+            const formulario = document.getElementById('form-setor');
+            const grupos = document.querySelectorAll('.setor-grupo');
+            const resumo = document.getElementById('resumo-setores');
+            const erro = document.getElementById('erro-setor');
 
-            function atualizarProblemas(tipoSelecionado) {
-                const lista = problemasPorCategoria[tipoSelecionado] || [];
-                
-                selectProblema.innerHTML = '<option value="">Selecione uma opção...</option>';
+            // Marca os setores que têm ao menos um "Sim" e atualiza o resumo
+            function atualizarResumo() {
+                const nomes = [];
 
-                lista.forEach(function (item) {
-                    const option = document.createElement('option');
-                    option.value = item[0];
-                    option.textContent = item[1];
-                    selectProblema.appendChild(option);
+                grupos.forEach(function (grupo) {
+                    const temSim = grupo.querySelector('input[value="sim"]:checked') !== null;
+                    grupo.classList.toggle('com-sim', temSim);
+                    if (temSim) nomes.push(grupo.dataset.setorNome);
                 });
 
-                if (lista.length > 0) {
-                    containerProblema.style.display = 'block';
-                    selectProblema.setAttribute('required', 'required');
-                } else {
-                    containerProblema.style.display = 'none';
-                    selectProblema.removeAttribute('required');
-                }
+                resumo.textContent = nomes.length ? nomes.join(', ') : 'Nenhum setor selecionado ainda';
+
+                if (nomes.length) erro.hidden = true;
+
+                return nomes.length;
             }
 
-            radiosTipo.forEach(function (radio) {
-                radio.addEventListener('change', function () {
-                    if (this.checked) {
-                        atualizarProblemas(this.value);
-                    }
-                });
+            formulario.addEventListener('change', atualizarResumo);
 
-                if (radio.checked) {
-                    atualizarProblemas(radio.value);
+            formulario.addEventListener('submit', function (evento) {
+                if (atualizarResumo() === 0) {
+                    evento.preventDefault();
+                    erro.textContent = 'Responda "Sim" em pelo menos uma pergunta para continuar.';
+                    erro.hidden = false;
+                    erro.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    erro.focus();
                 }
             });
+
+            atualizarResumo();
         });
     </script>
 </body>

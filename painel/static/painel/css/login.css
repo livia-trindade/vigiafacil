@@ -1,0 +1,169 @@
+:root {
+    --cor-principal: #11119F;
+    --cor-principal-escura: #0B0B7F;
+    --cor-fundo: #f1f5f4;
+    --cor-texto: #1f2933;
+    --cor-texto-suave: #52606d;
+    --cor-borda: #cbd2d9;
+    --cor-erro-fundo: #fdecea;
+    --cor-erro-texto: #b42318;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background: var(--cor-fundo);
+    color: var(--cor-texto);
+    font-family: 'Roboto', Arial, sans-serif;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+.login-brasao {
+    height: 72px;
+    width: auto;
+    margin-bottom: 0.75rem;
+}
+
+.login-container h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--cor-principal);
+}
+
+.login-subtitulo {
+    margin: 0.25rem 0 1.5rem;
+    font-size: 0.95rem;
+    color: var(--cor-texto-suave);
+}
+
+.mensagem-erro {
+    margin: 0 0 1rem;
+    padding: 0.75rem 1rem;
+    background: var(--cor-erro-fundo);
+    color: var(--cor-erro-texto);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    text-align: left;
+}
+
+.login-form {
+    text-align: left;
+}
+
+.login-campo {
+    margin-bottom: 1rem;
+}
+
+.login-campo label {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.login-campo input {
+    width: 100%;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid var(--cor-borda);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--cor-texto);
+    background: #fff;
+}
+
+.login-campo input:focus {
+    outline: 3px solid rgba(11, 110, 79, 0.25);
+    border-color: var(--cor-principal);
+}
+
+.btn-entrar {
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 8px;
+    background: var(--cor-principal);
+    color: #fff;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-entrar:hover {
+    background: var(--cor-principal-escura);
+}
+
+.btn-entrar:focus-visible {
+    outline: 3px solid rgba(11, 110, 79, 0.4);
+    outline-offset: 2px;
+}
+
+.senha-wrap {
+    position: relative;
+}
+
+/* espaço à direita para o texto não ficar embaixo do olhinho */
+.senha-wrap input {
+    padding-right: 2.75rem;
+}
+
+.btn-olho {
+    position: absolute;
+    top: 50%;
+    right: 0.5rem;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem;
+    border: none;
+    background: transparent;
+    color: #52606d;
+    cursor: pointer;
+}
+
+.btn-olho:hover {
+    color: #000000;
+}
+
+.btn-olho:focus-visible {
+    outline: 2px solid #000000;
+    border-radius: 4px;
+}
+
+/* o risco só aparece quando a senha está visível */
+.btn-olho .risco {
+    display: none;
+}
+
+.btn-olho.ativo .risco {
+    display: inline;
+}
+
+@media (max-width: 480px) {
+    .login-container {
+        padding: 1.5rem 1.25rem;
+    }
+}

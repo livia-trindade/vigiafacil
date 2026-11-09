@@ -4,6 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="{% static 'painel/css/acompanhamento.css' %}">
     <title>Registrar Acompanhamento | Vigia Fácil</title>
 </head>
@@ -11,13 +16,21 @@
 <body>
     <header>
         <div class="container cabecalho-conteudo">
-            <a href="{% url 'dashboard-painel' %}" class="brasao">
-                <img src="{% static 'denuncia/images/brasao-prefeitura.png' %}" alt="Brasão da Prefeitura">
-            </a>
+            <div class="cabecalho-esquerda">
+                <a href="{% url 'dashboard-painel' %}" class="brasao">
+                    <img src="{% static 'denuncia/images/brasao-prefeitura.png' %}" alt="VigiaFácil - Página inicial">
+                </a>
 
-            <h1 class="titulo">VIGIA FÁCIL</h1>
-
-            <div class="acoes-cabecalho">
+                <div class="ajuste-fonte" role="group" aria-label="Tamanho da fonte">
+                    <button type="button" id="fonte-diminuir" aria-label="Diminuir fonte">A-</button>
+                    <button type="button" id="fonte-padrao" aria-label="Fonte padrão">A</button>
+                    <button type="button" id="fonte-aumentar" aria-label="Aumentar fonte">A+</button>
+                </div>
+            </div>
+        
+            <a href="{% url 'dashboard-painel' %}"><h1  class="titulo">VIGIA FÁCIL</h1></a>
+            
+            <div class="acoes">
                 <span class="identificacao">Painel do Vigilante</span>
 
                 <form action="{% url 'logout-usuario' %}" method="post">
@@ -45,7 +58,7 @@
 
                 <div class="info-item">
                     <strong>Tipo:</strong>
-                    <span>{{ denuncia.get_tipo_display }}</span>
+                    <span>{{ denuncia.lista_setores|join:", " }}</span>
                 </div>
 
                 <div class="info-item">
@@ -100,5 +113,8 @@
     <footer>
         <div class="rodape"></div>
     </footer>
+
+    <script src="{% static 'denuncia/js/fonte.js' %}"></script>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
 </body>
 </html>

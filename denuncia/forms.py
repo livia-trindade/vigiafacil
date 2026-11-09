@@ -11,8 +11,6 @@ class DenunciaForm(forms.ModelForm):
         model = Denuncia
 
         fields = [
-            'tipo',
-            'problema',
             'descricao',
             'endereco',
             'ponto_referencia',
@@ -71,6 +69,14 @@ class DenunciaForm(forms.ModelForm):
                 'placeholder': 'Telefone para contato',
             }),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+ 
+        # Calculado a cada abertura do formulário (e não quando o servidor inicia)
+        self.fields['data_ocorrencia'].widget.attrs['max'] = (
+            timezone.localdate().isoformat()
+        )
 
     def clean(self):
         cleaned_data = super().clean()

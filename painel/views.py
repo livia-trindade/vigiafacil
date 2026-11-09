@@ -9,14 +9,14 @@ from .forms import StatusDenunciaForm, AcompanhamentoForm
 @login_required
 @permission_required('denuncia.view_denuncia', raise_exception=True)
 def dashboard(request):
-    denuncias = Denuncia.objects.all()
+    denuncias = Denuncia.objects.prefetch_related('classificacoes')
 
     categoria = request.GET.get('categoria', '')
     status_selecionado = request.GET.get('status', '')
     ordem = request.GET.get('ordem', 'recentes')
 
-    if categoria:
-        denuncias = denuncias.filter(tipo=categoria)
+    if categoria in dict(Denuncia.TIPO_DENUNCIA):
+        denuncias = denuncias.filter(classificacoes__tipo=categoria)
 
     if status_selecionado in dict(Denuncia.STATUS_DENUNCIA):
         denuncias = denuncias.filter(status=status_selecionado)

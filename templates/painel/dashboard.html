@@ -13,7 +13,7 @@
     <header>
         <div class="container cabecalho-conteudo">
             <div class="cabecalho-esquerda">
-                <a href="{% url 'index-denuncia' %}" class="brasao">
+                <a href="{% url 'dashboard-painel' %}" class="brasao">
                     <img src="{% static 'denuncia/images/brasao-prefeitura.png' %}" alt="VigiaFácil - Página inicial">
                 </a>
 
@@ -24,7 +24,7 @@
                 </div>
             </div>
         
-            <a href="{% url 'index-denuncia' %}"><h1  class="titulo">VIGIA FÁCIL</h1></a>
+            <a href="{% url 'dashboard-painel' %}"><h1  class="titulo">VIGIA FÁCIL</h1></a>
             
             <div class="acoes">
                 <span class="identificacao">Painel do Vigilante</span>
@@ -101,7 +101,6 @@
                             <tr>
                                 <th>Protocolo</th>
                                 <th>Categoria</th>
-                                <th>Problema específico</th>
                                 <th>Bairro</th>
                                 <th>Data de registro</th>
                                 <th>Status</th>
@@ -112,8 +111,7 @@
                             {% for denuncia in denuncias %}
                                 <tr>
                                     <td class="protocolo">{{ denuncia.protocolo }}</td>
-                                    <td>{{ denuncia.get_tipo_display }}</td>
-                                    <td>{{ denuncia.get_problema_display }}</td>
+                                    <td>{{ denuncia.lista_setores|join:", " }}</td>
                                     <td>{{ denuncia.bairro }}</td>
                                     <td>{{ denuncia.data_criacao|date:"d/m/Y H:i" }}</td>
                                     <td>

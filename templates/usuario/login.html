@@ -1,52 +1,94 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        
+    <link rel="stylesheet" href="{% static 'painel/css/login.css' %}">
+
     <title>Login - VigiaFácil</title>
 </head>
 
 <body>
     <main class="login-container">
-        <h1>VigiaFácil</h1>
+        <img
+            src="{% static 'denuncia/images/brasao-prefeitura.png' %}"
+            alt="Brasão da Prefeitura"
+            class="login-brasao"
+        >
+
+        <h1>VIGIA FÁCIL</h1>
+        <p class="login-subtitulo">Painel do Vigilante</p>
 
         {% if messages %}
             {% for message in messages %}
-                <p class="mensagem-erro">{{ message }}</p>
+                <p class="mensagem-erro" role="alert">{{ message }}</p>
             {% endfor %}
         {% endif %}
 
         {% if form.errors %}
-            <p class="mensagem-erro">
+            <p class="mensagem-erro" role="alert">
                 Verifique seu usuário e sua senha.
             </p>
         {% endif %}
 
-        <form method="POST">
+        <form method="POST" class="login-form">
             {% csrf_token %}
 
-            <label for="username">Usuário</label>
-            <input
-                type="text"
-                id="username"
-                name="username"
-                autocomplete="username"
-                required
-                autofocus
-            >
+            <div class="login-campo">
+                <label for="username">Usuário</label>
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    autocomplete="username"
+                    required
+                    autofocus
+                >
+            </div>
 
-            <label for="password">Senha</label>
-            <input
-                type="password"
-                id="password"
-                name="password"
-                autocomplete="current-password"
-                required
-            >
+            <div class="login-campo">
+                <label for="password">Senha</label>
+            
+                <div class="senha-wrap">
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        autocomplete="current-password"
+                        required
+                    >
+                
+                    <button type="button" class="btn-olho" aria-label="Mostrar senha" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                            <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                            <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/>
+                            <path class="risco" d="M3 3l18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
 
-            <button type="submit">Entrar</button>
+            <button type="submit" class="btn-entrar">Entrar</button>
         </form>
-
     </main>
+    <script>
+    document.querySelectorAll('.btn-olho').forEach(function (botao) {
+        botao.addEventListener('click', function () {
+            const campo = botao.parentElement.querySelector('input');
+            const mostrar = campo.type === 'password';
+
+            campo.type = mostrar ? 'text' : 'password';
+            botao.classList.toggle('ativo', mostrar);
+            botao.setAttribute('aria-pressed', mostrar);
+            botao.setAttribute('aria-label', mostrar ? 'Ocultar senha' : 'Mostrar senha');
+        });
+    });
+    </script>
 </body>
 </html>

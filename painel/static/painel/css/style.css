@@ -222,6 +222,7 @@ header img {
 table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: auto;
     text-align: left;
 }
 
@@ -234,7 +235,8 @@ th,
 td {
     padding: 1rem 1.2rem;
     border-bottom: 1px solid #000000;
-    white-space: nowrap;
+    white-space: normal;
+    overflow-wrap: anywhere;
 }
 
 th {
@@ -347,6 +349,17 @@ footer {
 .rodape {
     background-color: #D9D9D9;
     height: 100px;
+}
+
+td.protocolo,
+td.data-registro {
+    white-space: nowrap;
+    overflow-wrap: normal;
+}
+
+th:nth-child(2),
+td:nth-child(2) {
+    max-width: 280px;
 }
 
 /* RESPONSIVIDADE */
